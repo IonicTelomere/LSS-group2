@@ -1,12 +1,13 @@
 {
   "ExpandedNodes": [
     "",
+    "\\amplify",
     "\\src",
     "\\src\\components",
     "\\src\\components\\auth",
     "\\src\\components\\common",
     "\\src\\components\\home"
   ],
-  "SelectedNode": "\\src\\App.css",
+  "SelectedNode": "\\src\\components\\common",
   "PreviewInSolutionExplorer": false
 }
