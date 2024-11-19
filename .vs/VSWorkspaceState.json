@@ -1,6 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\auth",
+    "\\src\\components\\common",
+    "\\src\\components\\home"
   ],
+  "SelectedNode": "\\src\\components\\auth\\RegisterPage.js",
   "PreviewInSolutionExplorer": false
 }
