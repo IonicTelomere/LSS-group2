@@ -4,14 +4,18 @@ import Navbar from 'react-bootstrap/Navbar';
 
 function SiteNav() {
     return (
-            <Navbar bg="gray" expand="lg" varient="dark">
+        <Navbar expand="lg" className="mt-2 shadow-sm navbar-gradient" style={{ backgroundColor: "#696969" }}>
                 <Container>
-                    <Navbar.Brand>LSS Group 2</Navbar.Brand>
+                <Navbar.Brand href="/home" className="text-info">
+                    LSS Group 2
+                </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ms-md-auto">
-                        <Nav.Link href="/login">Login</Nav.Link>
-                        <Nav.Link href="/register">Register</Nav.Link>
+                        <Nav.Link href="/login" className="px-3 text-dark fw-semibold">Login</Nav.Link>
+                        <Nav.Link href="/register" className="px-3 text-dark fw-semibold">Register</Nav.Link>
+                        <Nav.Link href="/admin" className="px-3 text-dark fw-semibold">Admin</Nav.Link>
+                        <Nav.Link href="/lecturer" className="px-3 text-dark fw-semibold">Lecturer</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
