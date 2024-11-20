@@ -10,6 +10,8 @@ import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import AdminPage from './components/home/AdminPage';
 import LecturerPage from './components/home/LecturerPage';
+import ManagerPage from './components/home/ManagerPage';
+import ManagerSummary from './components/common/ManagerSummary';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/admin' element={<AdminPage />} />
               <Route path='/lecturer' element={<LecturerPage />} />
+              <Route path='/manager' element={<ManagerPage />} />
+              <Route path='/managersummary' element={<ManagerSummary />} />
           </Routes>
           <SiteFooter />
     </div>

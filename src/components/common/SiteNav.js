@@ -7,7 +7,7 @@ function SiteNav() {
         <Navbar expand="lg" className="mt-2 shadow-sm navbar-gradient" style={{ backgroundColor: "#696969" }}>
                 <Container>
                 <Navbar.Brand href="/home" className="text-info">
-                    LSS Group 2
+                    Scheduling System
                 </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -16,6 +16,8 @@ function SiteNav() {
                         <Nav.Link href="/register" className="px-3 text-dark fw-semibold">Register</Nav.Link>
                         <Nav.Link href="/admin" className="px-3 text-dark fw-semibold">Admin</Nav.Link>
                         <Nav.Link href="/lecturer" className="px-3 text-dark fw-semibold">Lecturer</Nav.Link>
+                        <Nav.Link href="/manager" className="px-3 text-dark fw-semibold">Manager</Nav.Link>
+                        <Nav.Link href="/managersummary" className="px-3 text-dark fw-semibold">Manager Summary</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

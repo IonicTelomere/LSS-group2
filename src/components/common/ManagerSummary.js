@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 
-function ManagerPage() {
+function ManagerSummary() {
     return (
         <Container>
             <Row>
@@ -32,7 +32,8 @@ function ManagerPage() {
                                     marginBottom: '10px',
                                 }}>Home Page</Nav.Link>
                             <Nav.Link
-                                href="/managersummary"
+                                eventKey="link-1"
+                                href="/manager"
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
@@ -40,7 +41,7 @@ function ManagerPage() {
                                     textDecoration: 'none',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
-                                }}>Subject Summary</Nav.Link>
+                                }}>Manager Home</Nav.Link>
                             <Nav.Link
                                 eventKey="link-2"
                                 style={{
@@ -65,11 +66,22 @@ function ManagerPage() {
                             {/* Second Div with Padding */}
                             <div style={{
                                 backgroundColor: 'lightblue',
-                                padding: '100px 780px 440px 100px',
+                                padding: '100px 780px 170px 100px',
                                 borderRadius: '30px',
                                 textAlign: 'left',
                             }}>
-                                <p></p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
+                                <p>CSEXXX</p>
                             </div>
                         </div>
                     </div>
@@ -79,4 +91,4 @@ function ManagerPage() {
     )
 }
 
-export default ManagerPage;
+export default ManagerSummary;
