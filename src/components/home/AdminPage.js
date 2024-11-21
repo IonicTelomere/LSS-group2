@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import DateTimePicker from 'react-datetime-picker';
+import "react-datepicker/dist/react-datepicker.css";
 import { useState } from 'react';
 
 function AdminPage() {
@@ -169,14 +170,19 @@ function AdminPage() {
                                     { session ? 
                                         <>
                                             <h2>Hey there {session.user.email}</h2>
+                                            
                                             <p>Start of your event</p>
                                             <DateTimePicker onChange={setStart} value={start} />
+                                            
                                             <p>End of your event</p>
                                             <DateTimePicker onChange={setEnd} value={end} />
+                                            
                                             <p>Event name</p>
                                             <input type="text" onChange={(e) => setEventName(e.target.value)} />
+                                            
                                             <p>Event description</p>
                                             <input type="text" onChange={(e) => setEventDescription(e.target.value)} />
+                                            
                                             <hr />
                                             <Button onClick={() => createCalendarEvent()}>Create Calendar Event</Button>
                                             <p></p>
