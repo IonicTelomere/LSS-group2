@@ -7,7 +7,7 @@ function HomePage() {
             <Row>
                 <Col>
                     <h1 style={{ fontWeight: 'lighter', fontSize: '2.5rem', color: '#007bff' }}>
-                        LSS Group 2
+                        Welcome
                     </h1>
                     <p style={{ marginTop: '1.5rem', lineHeight: '1.8', fontSize: '1.1rem', color: '#343a40' }}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

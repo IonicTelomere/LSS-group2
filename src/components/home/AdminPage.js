@@ -26,7 +26,9 @@ function AdminPage() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
+
                 scopes: 'https://www.googleapis.com/auth/calendar'
+
             }
         });
         if (error) {
@@ -56,14 +58,15 @@ function AdminPage() {
         await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
             method: "POST",
             headers: {
-                'Authorization': 'Bearer ' + session.provider_token // Access token for google
+                'Authorization': 'Bearer ' + session.provider_token,
+                'Content-Type': 'application/json' // Access token for google
             },
             body: JSON.stringify(event)
         }).then((data) => {
             return data.json();
         }).then((data) => {
             console.log(data);
-            alert("Event created, check your Google Calendar!");
+            alert("Event created ", event);
         });
     }
 
@@ -78,7 +81,7 @@ function AdminPage() {
         <Container>
             <Row>
                 <Col>
-                    <h1>Lecturer Page</h1>
+                    <h1>Admin Page</h1>
                     <div
                         style={{
                             display: 'flex', // Enables horizontal layout
