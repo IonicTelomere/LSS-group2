@@ -5,33 +5,40 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
-import DateTimePicker from 'react-datetime-picker';
+import "react-datepicker/dist/react-datepicker.css";
 import { useState } from 'react';
 
 function AdminPage() {
-    const session = useSession(); // Tokes, When session exists we have user
-    const supabase = useSupabaseClient();// Talk to supabase
-    const { isLoading } = useSessionContext();
     const [start, setStart] = useState(new Date());
     const [end, setEnd] = useState(new Date());
     const [eventName, setEventName] = useState("");
     const [eventDescription, setEventDescription] = useState("");
 
+    const session = useSession(); // tokens, when session exists we have a user
+    const supabase = useSupabaseClient(); // talk to supabase!
+    const { isLoading } = useSessionContext();
+
     if (isLoading) {
-        return<></>
+        return <></>
     }
 
     async function googleSignIn() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                scopes: 'https://www.googleapis.com/auth/calendar.events'
+
+                scopes: 'https://www.googleapis.com/auth/calendar'
+
             }
         });
         if (error) {
-            alert("Error Logging in to Google")
+            alert("Error logging in to Google provider with Supabase");
             console.log(error);
         }
+    }
+
+    async function signOut() {
+        await supabase.auth.signOut();
     }
 
     async function createCalendarEvent() {
@@ -63,13 +70,13 @@ function AdminPage() {
         });
     }
 
-
-    async function signOut() {
-        await supabase.auth.signOut();
-    }
     console.log(session);
     console.log(start);
+    console.log(eventName);
+    console.log(eventDescription);
 
+
+    
     return (
         <Container>
             <Row>
@@ -170,14 +177,33 @@ function AdminPage() {
                                     { session ? 
                                         <>
                                             <h2>Hey there {session.user.email}</h2>
-                                            <p>Start of your event</p>
-                                            <DateTimePicker onChange={setStart} value={start} />
-                                            <p>End of your event</p>
-                                            <DateTimePicker onChange={setEnd} value={end} />
+                                            
+                                            <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+                                                <p>Start of your event</p>
+                                                <input
+                                                    type="date"
+                                                    value={start.toISOString().split('T')[0]}
+                                                    onChange={(e) => setStart(new Date(e.target.value))}
+                                                    style={{ width: '100%' }} // Optional: Adjust width
+                                                />
+                                            </div>
+                                            
+                                            <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+                                                <p>End of your event</p>
+                                                <input
+                                                    type="date"
+                                                    value={end.toISOString().split('T')[0]}
+                                                    onChange={(e) => setEnd(new Date(e.target.value))}
+                                                    style={{ width: '100%' }} // Optional: Adjust width
+                                                />
+                                            </div>
+                                            
                                             <p>Event name</p>
                                             <input type="text" onChange={(e) => setEventName(e.target.value)} />
+                                            
                                             <p>Event description</p>
                                             <input type="text" onChange={(e) => setEventDescription(e.target.value)} />
+                                            
                                             <hr />
                                             <Button onClick={() => createCalendarEvent()}>Create Calendar Event</Button>
                                             <p></p>

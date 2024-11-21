@@ -14,11 +14,13 @@ const supabase = createClient(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+    <React.StrictMode>
     <BrowserRouter>
         <SessionContextProvider supabaseClient={supabase}>
             <App />
         </SessionContextProvider>
     </BrowserRouter>
+    </React.StrictMode >
 );
 
 
