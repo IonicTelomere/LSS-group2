@@ -1,6 +1,5 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
@@ -9,7 +8,7 @@ function LecturerPage() {
     return (
         <Container>
             <Row>
-                <h1>Lecturer Page</h1>
+                <h1>Notifications & Calendar</h1>
                 <div
                     style={{
                         display: 'flex', // Enables horizontal layout
@@ -37,7 +36,6 @@ function LecturerPage() {
                                 marginBottom: '10px',
                             }}>Home Page</Nav.Link>
                         <Nav.Link
-                            eventKey="link-1"
                             style={{
                                 padding: '10px',
                                 borderRadius: '5px',
@@ -47,7 +45,6 @@ function LecturerPage() {
                                 marginBottom: '10px',
                             }}>Navigation2</Nav.Link>
                         <Nav.Link
-                            eventKey="link-2"
                             style={{
                                 padding: '10px',
                                 borderRadius: '5px',
@@ -57,14 +54,15 @@ function LecturerPage() {
                                 marginBottom: '10px',
                             }}>Navigation3</Nav.Link>
                         <Nav.Link
-                            eventKey="disabled"
-                            disabled
+                            href="/lecturerprofile"
                             style={{
                                 padding: '10px',
                                 borderRadius: '5px',
-                                color: 'gray',
-                                backgroundColor: '#f0f0f0',
-                            }}>To be assigned</Nav.Link>
+                                color: 'black',
+                                textDecoration: 'none',
+                                backgroundColor: 'white',
+                                marginBottom: '10px',
+                            }}>Your Profile</Nav.Link>
                     </Nav>
 
                     {/* Notes and Calendar Divs */}
