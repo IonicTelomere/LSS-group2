@@ -25,6 +25,7 @@ export const UserProvider = ({ children }) => {
       roleID: null,
       email: '',
     });
+    localStorage.removeItem("authToken");
   };
 
   return (

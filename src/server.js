@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require("bcrypt");
 const axios = require('axios');
+const path = require('path');
 
 // Initialize the express application
 const app = express();
@@ -62,6 +63,12 @@ connection.connect((err) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'components', 'auth', 'register.js'));
+  });
 
 // Login
 app.post("/api/login", (req, res) => {

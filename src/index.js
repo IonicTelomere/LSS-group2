@@ -7,6 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { UserProvider } from './components/auth/UserContext';
+import UserSessionTimeout from "./components/auth/UserSessionTimeout";
+
 
 const supabase = createClient(
     "https://pxfsgjxcggucietafrgf.supabase.co",
@@ -17,6 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <UserProvider>
+        <UserSessionTimeout timeoutDuration={1800000} />
             <SessionContextProvider supabaseClient={supabase}>
                 <App />
             </SessionContextProvider>
