@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { UserProvider } from './components/auth/UserContext';
 
 const supabase = createClient(
     "https://pxfsgjxcggucietafrgf.supabase.co",
@@ -15,9 +16,11 @@ const supabase = createClient(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
-        <SessionContextProvider supabaseClient={supabase}>
-            <App />
-        </SessionContextProvider>
+        <UserProvider>
+            <SessionContextProvider supabaseClient={supabase}>
+                <App />
+            </SessionContextProvider>
+        </UserProvider>
     </BrowserRouter>
 );
 

@@ -74,7 +74,7 @@ function AdminPage() {
         <Container>
             <Row>
                 <Col>
-                    <h1>Lecturer Page</h1>
+                    <h1>Admin Page</h1>
                     <div
                         style={{
                             display: 'flex', // Enables horizontal layout

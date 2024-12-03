@@ -16,32 +16,32 @@ function LoginPage() {
             const response = await fetch("http://localhost:3000/api/login", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",   
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
             });
     
-            if (!response.ok) {   
+            if (!response.ok) {
                 setError(await response.text() || "Login Failed.");
                 return;
             }
     
             const data = await response.json();
             setSuccess("Login successful!");
-            console.log("User role:", data.RoleID); // Assuming RoleID exists
-
-            // Redirect based on role (adjust according to your backend response)
+            console.log("User role:", data.RoleID); // Debug: Check RoleID
+    
+            // Redirect based on role
             if (data.RoleID === 10) {
+                console.log("Navigating to /admin");
                 navigate("/admin");
-            } 
-            else if (data.RoleID === 20) {
+            } else if (data.RoleID === 20) {
+                console.log("Navigating to /manager");
                 navigate("/manager");
-            } 
-            else if (data.RoleID === 30) {
-                navigate("/lecturer");  // Assuming role 30 is for Lecturer
-            } 
-            else {
-                setError("Invalid role or data."); // Handle unexpected role
+            } else if (data.RoleID === 30) {
+                console.log("Navigating to /lecturer");
+                navigate("/lecturer");
+            } else {
+                setError("Invalid role or data.");
             }
         } catch (err) {
             console.error("Login error:", err);
