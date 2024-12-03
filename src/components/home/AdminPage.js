@@ -94,7 +94,7 @@ function AdminPage() {
                             }}
                         >
                             <Nav.Link
-                                href="/home"
+                                href="/register"
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
@@ -104,7 +104,7 @@ function AdminPage() {
                                     marginBottom: '10px',
                                 }}
                             >
-                                Active
+                                Register
                             </Nav.Link>
                             <Nav.Link
                                 eventKey="link-1"

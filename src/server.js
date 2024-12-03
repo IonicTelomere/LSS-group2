@@ -64,32 +64,48 @@ app.listen(PORT, () => {
 });
 
 // Login
-app.post("/api/login", async (req, res) => {
+app.post("/api/login", (req, res) => {
     const { email, password } = req.body;
 
-    const query = `
-        SELECT users.password, roles.role_name
-        FROM users
-        JOIN roles ON users.role_id = roles.role_id
-        WHERE users.email = ?`;
+    // Validate input
+    if (!email || !password) {
+        return res.status(400).send("Email and password are required.");
+    }
 
-        connection.execute(query, [email], async (err, results) => {
-            if (err) return res.status(500).json({ message: "Database Error" });
+    // Query to get user by email
+    const query = "SELECT * FROM USER WHERE Email = ?";
+    connection.execute(query, [email], (err, results) => {
+        if (err) {
+            return res.status(500).send("Error querying the database.");
+        }
 
-            if (results.length === 0) {
-                return res.status(401).json({ message: "Invalid email or password" });
+        if (results.length === 0) {
+            return res.status(401).send("Invalid email or password.");
+        }
+
+        // Compare password with hashed password stored in database
+        const user = results[0];
+        bcrypt.compare(password, user.PasswordHash, (err, isMatch) => {
+            if (err) {
+                return res.status(500).send("Error comparing passwords.");
             }
 
-            const user = results[0];
-
-            const isPasswordValid = await bcrypt.compare(password, user.password);
-            if (!isPasswordValid) {
-                return res.status(401).json({ message: "Invild email or password" });
+            if (!isMatch) {
+                return res.status(401).send("Invalid email or password.");
             }
 
-            res.json({ role: user.role_name });
+            // Return user data, including role
+            return res.json({
+                UserID: user.UserID,
+                RoleID: user.RoleID,  // Return RoleID for role-based redirection
+                FirstName: user.FirstName,
+                LastName: user.LastName,
+                Email: user.Email,
+            });
         });
+    });
 });
+
 
 app.get("/api/courses", (req, res) => {
     const query = 'SELECT * FROM courses';
@@ -101,4 +117,32 @@ app.get("/api/courses", (req, res) => {
             res.json(results);
         }
     });
+});
+
+
+// Registration API endpoint
+app.post('/api/register', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    try {
+        // Hash the password using bcrypt
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Ensure you have the correct table name 'users' (adjust case if needed)
+        const query = 'INSERT INTO USER (Email, PasswordHash) VALUES (?, ?)';
+        connection.query(query, [email, hashedPassword], (err, result) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Database error' });
+            }
+            return res.status(200).json({ message: 'User registered successfully' });
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
 });

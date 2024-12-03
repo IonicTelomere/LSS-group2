@@ -2,148 +2,143 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 
-
 function LoginPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const navigate = useNavigate(); 
 
-        const [email, setEmail] = useState("");
-        const [password, setPassword] = useState("");
-        const [error, setError] = useState("");
-        const [success, setSuccess] = useState("");
-        const navigate = useNavigate(); 
-
-        const handleLogin = async (e) => {
-            e.preventDefault();
-        
-            try {
-              const response = await fetch("http://localhost:3000/api/login", {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+    
+        try {
+            const response = await fetch("http://localhost:3000/api/login", {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json",   
-        
+                    "Content-Type": "application/json",   
                 },
                 body: JSON.stringify({ email, password }),
-              });
-        
-              if (!response.ok)   
-                {
-                    setError(await response.text() || "Login Failed.");
-                    return;
-                }
-        
-              const data = await response.json();
-              setSuccess("Login successful!");
-              console.log("User role:", data.role); // Assuming data.role exists
-        
-              // Redirect based on role (assuming role is stored in user data)
-              if (data.role === "lecturer") {
-                navigate("/LecturerPage");
-              } 
-              else if (data.role === "admin") {
-                navigate("/AdminPage");
-              } 
-              else if (data.role === "manager") {
-                navigate("/ManagerPage");
-              } 
-              else {
-                setError("Invalid role or data."); // Handle unexpected role
-              }
-
-            } catch (err) {
-              console.error("Login error:", err);
-              setError("An error occurred. Please try again.");
+            });
+    
+            if (!response.ok) {   
+                setError(await response.text() || "Login Failed.");
+                return;
             }
-          };
+    
+            const data = await response.json();
+            setSuccess("Login successful!");
+            console.log("User role:", data.RoleID); // Assuming RoleID exists
 
-          return (
-            <Container
-                className="d-flex justify-content-center align-items-start vh-100"
+            // Redirect based on role (adjust according to your backend response)
+            if (data.RoleID === 10) {
+                navigate("/admin");
+            } 
+            else if (data.RoleID === 20) {
+                navigate("/manager");
+            } 
+            else if (data.RoleID === 30) {
+                navigate("/lecturer");  // Assuming role 30 is for Lecturer
+            } 
+            else {
+                setError("Invalid role or data."); // Handle unexpected role
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            setError("An error occurred. Please try again.");
+        }
+    };
+
+    return (
+        <Container
+            className="d-flex justify-content-center align-items-start vh-100"
+            style={{
+                backgroundColor: "#f8f9fa",
+                minHeight: "100vh",
+                paddingTop: "15vh", // Adjust this value for even higher positioning
+            }}
+        >
+            <Row
+                className="px-4 my-5 shadow"
                 style={{
-                    backgroundColor: "#f8f9fa",
-                    minHeight: "100vh",
-                    paddingTop: "15vh", // Adjust this value for even higher positioning
+                    borderRadius: "10px",
+                    backgroundColor: "#333333",
+                    padding: "30px",
+                    width: "100%",
+                    maxWidth: "500px",
                 }}
             >
-                <Row
-                    className="px-4 my-5 shadow"
-                    style={{
-                        borderRadius: "10px",
-                        backgroundColor: "#333333",
-                        padding: "30px",
-                        width: "100%",
-                        maxWidth: "500px",
-                    }}
-                >
-                    <Col>
-                        <h3 className="text-center mb-4" style={{ color: "#3399ff" }}>
-                            Login
-                        </h3>
-                        {error && (
-                            <Alert variant="danger" style={{ fontSize: "0.9rem" }}>
-                                {error}
-                            </Alert>
-                        )}
-                        {success && (
-                            <Alert variant="success" style={{ fontSize: "0.9rem" }}>
-                                {success}
-                            </Alert>
-                        )}
-        
-                        <Form onSubmit={handleLogin}>
-                            <Form.Group controlId="formBasicEmail" className="mb-3">
-                                <Form.Label style={{ fontWeight: "bold", color: "#3399ff" }}>
-                                    Email address
-                                </Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Enter email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    style={{
-                                        border: "1px solid #ced4da",
-                                        borderRadius: "5px",
-                                        padding: "10px",
-                                    }}
-                                />
-                            </Form.Group>
-        
-                            <Form.Group controlId="formBasicPassword" className="mb-3">
-                                <Form.Label style={{ fontWeight: "bold", color: "#3399ff" }}>
-                                    Password
-                                </Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Enter password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    style={{
-                                        border: "1px solid #ced4da",
-                                        borderRadius: "5px",
-                                        padding: "10px",
-                                    }}
-                                />
-                            </Form.Group>
-        
-                            <Button
-                                variant="primary"
-                                type="submit"
-                                className="w-100"
+                <Col>
+                    <h3 className="text-center mb-4" style={{ color: "#3399ff" }}>
+                        Login
+                    </h3>
+                    {error && (
+                        <Alert variant="danger" style={{ fontSize: "0.9rem" }}>
+                            {error}
+                        </Alert>
+                    )}
+                    {success && (
+                        <Alert variant="success" style={{ fontSize: "0.9rem" }}>
+                            {success}
+                        </Alert>
+                    )}
+
+                    <Form onSubmit={handleLogin}>
+                        <Form.Group controlId="formBasicEmail" className="mb-3">
+                            <Form.Label style={{ fontWeight: "bold", color: "#3399ff" }}>
+                                Email address
+                            </Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
                                 style={{
-                                    backgroundColor: "#007bff",
-                                    borderColor: "#007bff",
+                                    border: "1px solid #ced4da",
+                                    borderRadius: "5px",
                                     padding: "10px",
-                                    fontSize: "1rem",
-                                    fontWeight: "bold",
                                 }}
-                            >
-                                Login
-                            </Button>
-                        </Form>
-                    </Col>
-                </Row>
-            </Container>
-        );    
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBasicPassword" className="mb-3">
+                            <Form.Label style={{ fontWeight: "bold", color: "#3399ff" }}>
+                                Password
+                            </Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                style={{
+                                    border: "1px solid #ced4da",
+                                    borderRadius: "5px",
+                                    padding: "10px",
+                                }}
+                            />
+                        </Form.Group>
+
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="w-100"
+                            style={{
+                                backgroundColor: "#007bff",
+                                borderColor: "#007bff",
+                                padding: "10px",
+                                fontSize: "1rem",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Login
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+    );
 }
 
 export default LoginPage;
