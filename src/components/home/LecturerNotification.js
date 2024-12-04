@@ -10,6 +10,7 @@ import Nav from 'react-bootstrap/Nav';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import axios from 'axios';
+import LogoutButton from '../auth/Logout';
 
 // Setup localizer for react-big-calendar
 const localizer = momentLocalizer(moment);
@@ -118,7 +119,7 @@ function LecturerNotification() {
             }}>
             <Nav.Link href="/home">Home Page</Nav.Link>
             <Nav.Link eventKey="link-1">Navigation2</Nav.Link>
-            <Nav.Link eventKey="link-2">Navigation3</Nav.Link>
+            <LogoutButton />
           </Nav>
 
           {/* Notes and Calendar Divs */}

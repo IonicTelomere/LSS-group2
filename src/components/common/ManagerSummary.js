@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
+import LogoutButton from '../auth/Logout';
 
 function ManagerSummary() {
     return (
@@ -32,14 +33,7 @@ function ManagerSummary() {
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
                                 }}>Manager Home</Nav.Link>
-                            <Nav.Link
-                                href='/'
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'gray',
-                                    backgroundColor: '#f0f0f0',
-                                }}>Logout</Nav.Link>
+                            <LogoutButton />
                         </Nav>
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {/* Second Div with Padding */}

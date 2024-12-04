@@ -28,6 +28,8 @@ function LoginPage() {
             }
     
             const data = await response.json();
+            localStorage.setItem("authToken", data.token);
+            localStorage.setItem("userRole", data.role);
             console.log("Login response:", data);
     
             if (!data.RoleID) {
@@ -37,9 +39,9 @@ function LoginPage() {
     
             setSuccess("Login successful!");
             setTimeout(() => {
-                if (data.RoleID === 10) navigate("/admin");
-                else if (data.RoleID === 20) navigate("/manager");
-                else if (data.RoleID === 30) navigate("/lecturerprofile");
+                if (data.RoleID === 10) navigate("/admin", {replace: true});
+                else if (data.RoleID === 20) navigate("/manager", {replace: true});
+                else if (data.RoleID === 30) navigate("/lecturerprofile", {replace: true});
                 else navigate("/login");
             }, 1000);
         } catch (err) {

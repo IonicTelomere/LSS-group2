@@ -11,8 +11,8 @@ import AdminPage from './components/home/AdminPage';
 import LecturerNotification from './components/home/LecturerNotification';
 import ManagerPage from './components/home/ManagerPage';
 import ManagerSummary from './components/common/ManagerSummary';
-import DataBase from './components/home/DataBase';
 import LecturerProfile from "./components/home/LecturerProfile";
+
 
 
 function App() {

@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import DatePicker from 'react-date-picker';
 import { useState } from 'react';
+import LogoutButton from '../auth/Logout';
 
 function AdminPage() {
     const session = useSession(); // Tokes, When session exists we have user
@@ -102,23 +103,12 @@ function AdminPage() {
                                     textDecoration: 'none',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
+                                    borderColor: 'white',
                                 }}
                             >
                                 Register
                             </Nav.Link>
-                            <Nav.Link
-                                href="/"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}
-                            >
-                                Logout
-                            </Nav.Link>
+                            <LogoutButton />
                         </Nav>
 
                         {/* Notes and Calendar Divs */}

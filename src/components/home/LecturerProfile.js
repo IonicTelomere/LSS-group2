@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import Stack from 'react-bootstrap/Stack';
 import Table from 'react-bootstrap/Table';
+import LogoutButton from '../auth/Logout';
 
 function LecturerProfile() {
     return (
@@ -39,19 +40,7 @@ function LecturerProfile() {
                                 Notifications & Calendar View
                             </Nav.Link>
                         
-                       <Nav.Link
-                                href="/"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}
-                            >
-                               Logout
-                            </Nav.Link>
+                            <LogoutButton />
                     </Nav>
 
                     {/* Top & Bottom Div */}
