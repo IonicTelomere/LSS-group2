@@ -4,28 +4,30 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import SiteNav from './components/common/SiteNav';
 import SiteFooter from './components/common/SiteFooter';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import AdminPage from './components/home/AdminPage';
-import LecturerPage from './components/home/LecturerPage';
+import LecturerNotification from './components/home/LecturerNotification';
 import ManagerPage from './components/home/ManagerPage';
 import ManagerSummary from './components/common/ManagerSummary';
 import DataBase from './components/home/DataBase';
+import LecturerProfile from "./components/home/LecturerProfile";
+
 
 function App() {
   const { user } = useUser();
 
   return (
     <UserProvider>  {/* Wrap the entire app with UserProvider */}
-      <SiteNav />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/admin" element={<AdminPage/>} />
           <Route path="/manager" element={<ManagerPage/>} />
-          <Route path="/lecturer" element={<LecturerPage/>} />
+          <Route path="/lecturerprofile" element={<LecturerProfile />} />
+          <Route path="/managersummary" element={<ManagerSummary />} />
+          <Route path="/lecturernotification" element={<LecturerNotification />} />
           <Route
             path="/admin"
             element={
@@ -40,13 +42,31 @@ function App() {
               <PrivateRoute requiredRoleID={20}>
                 <ManagerPage />
               </PrivateRoute>
+              
+            }
+          />
+            <Route
+            path="/managersummary"
+            element={
+              <PrivateRoute requiredRoleID={20}>
+                <ManagerSummary />
+              </PrivateRoute>
+              
             }
           />
           <Route
-            path="/lecturer"
+            path="/lecturerprofile"
             element={
               <PrivateRoute requiredRoleID={30}>
-                <LecturerPage />
+                <LecturerProfile />
+              </PrivateRoute>
+            }
+          />
+             <Route
+            path="/lecturernotification"
+            element={
+              <PrivateRoute requiredRoleID={30}>
+                <LecturerNotification />
               </PrivateRoute>
             }
           />

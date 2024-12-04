@@ -22,33 +22,31 @@ function LoginPage() {
             });
     
             if (!response.ok) {
-                setError(await response.text() || "Login Failed.");
+                const errorText = await response.text();
+                setError(errorText || "Login failed. Please try again.");
                 return;
             }
     
             const data = await response.json();
-            setSuccess("Login successful!");
-            console.log("User role:", data.RoleID); // Debug: Check RoleID
+            console.log("Login response:", data);
     
-            // Redirect based on role
-            if (data.RoleID === 10) {
-                console.log("Navigating to /admin");
-                navigate("/admin");
-            } else if (data.RoleID === 20) {
-                console.log("Navigating to /manager");
-                navigate("/manager");
-            } else if (data.RoleID === 30) {
-                console.log("Navigating to /lecturer");
-                navigate("/lecturer");
-            } else {
-                setError("Invalid role or data.");
+            if (!data.RoleID) {
+                setError("Invalid server response: Missing RoleID.");
+                return;
             }
+    
+            setSuccess("Login successful!");
+            setTimeout(() => {
+                if (data.RoleID === 10) navigate("/admin");
+                else if (data.RoleID === 20) navigate("/manager");
+                else if (data.RoleID === 30) navigate("/lecturerprofile");
+                else navigate("/login");
+            }, 1000);
         } catch (err) {
             console.error("Login error:", err);
-            setError("An error occurred. Please try again.");
+            setError("An unexpected error occurred. Please try again later.");
         }
     };
-
     return (
         <Container
             className="d-flex justify-content-center align-items-start vh-100"

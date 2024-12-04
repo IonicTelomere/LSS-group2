@@ -4,18 +4,20 @@ import { useUser } from "./UserContext";
 const PrivateRoute = ({ children, requiredRoleID }) => {
   const { user } = useUser();
 
-  // If user is not logged in, redirect to login page
-  if (!user.isLoggedIn) {
+  // Debug user state
+  console.log("PrivateRoute: User Context", user);
+
+  // Handle cases where user data isn't loaded yet
+  if (!user) {
     return <Navigate to="/login" />;
   }
 
-  // Match the required role ID
-  if (user.roleID === requiredRoleID) {
-    return children; // Render children (admin, manager, or lecturer page)
+  // Redirect to login if not logged in
+  if (!user.isLoggedIn) {
+    return <Navigate to="/login" />;
   }
-
-  // Redirect to home if no matching role
-  return <Navigate to="/login" />;
+  // Render the protected route
+  return children;
 };
 
 export default PrivateRoute;

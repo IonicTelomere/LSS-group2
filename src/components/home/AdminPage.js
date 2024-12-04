@@ -107,7 +107,7 @@ function AdminPage() {
                                 Register
                             </Nav.Link>
                             <Nav.Link
-                                eventKey="link-1"
+                                href="/"
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
@@ -117,32 +117,7 @@ function AdminPage() {
                                     marginBottom: '10px',
                                 }}
                             >
-                                Link
-                            </Nav.Link>
-                            <Nav.Link
-                                eventKey="link-2"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}
-                            >
-                                Link
-                            </Nav.Link>
-                            <Nav.Link
-                                eventKey="disabled"
-                                disabled
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'gray',
-                                    backgroundColor: '#f0f0f0',
-                                }}
-                            >
-                                Disabled
+                                Logout
                             </Nav.Link>
                         </Nav>
 

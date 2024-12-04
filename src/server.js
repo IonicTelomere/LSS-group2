@@ -10,6 +10,12 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -63,12 +69,6 @@ connection.connect((err) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'components', 'auth', 'register.js'));
-  });
 
 // Login
 app.post("/api/login", (req, res) => {

@@ -21,18 +21,8 @@ function ManagerSummary() {
                                 borderRadius: '30px',
                                 width: '250px', // Fixed width for consistent layout
                             }}>
+                            
                             <Nav.Link
-                                href="/home"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}>Home Page</Nav.Link>
-                            <Nav.Link
-                                eventKey="link-1"
                                 href="/manager"
                                 style={{
                                     padding: '10px',
@@ -43,24 +33,13 @@ function ManagerSummary() {
                                     marginBottom: '10px',
                                 }}>Manager Home</Nav.Link>
                             <Nav.Link
-                                eventKey="link-2"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}>Navigation3</Nav.Link>
-                            <Nav.Link
-                                eventKey="disabled"
-                                disabled
+                                href='/'
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
                                     color: 'gray',
                                     backgroundColor: '#f0f0f0',
-                                }}>To be assigned</Nav.Link>
+                                }}>Logout</Nav.Link>
                         </Nav>
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {/* Second Div with Padding */}
