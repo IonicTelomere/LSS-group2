@@ -8,6 +8,7 @@ import { createClient } from '@supabase/supabase-js';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { UserProvider } from './components/auth/UserContext';
 import UserSessionTimeout from "./components/auth/UserSessionTimeout";
+import PrivateRoute from './components/auth/PrivateRoute';
 
 
 const supabase = createClient(
