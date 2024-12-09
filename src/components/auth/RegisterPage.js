@@ -219,7 +219,30 @@ function RegisterPage() {
       </Form.Select>
     </Form.Group>
 
+    <Form.Group className="mb-3">
+      <Form.Label>Preference</Form.Label>
+      <Form.Select value={preference} onChange={handlePreferenceChange} required>
+        <option value="">Select Subject</option>
+        {filteredSubjects.map((subject) => (
+          <option key={subject} value={subject}>
+            {subject}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
     
+    <Form.Group className="mb-3">
+      <Form.Label>Preference</Form.Label>
+      <Form.Select value={preference} onChange={handlePreferenceChange} required>
+        <option value="">Select Subject</option>
+        {filteredSubjects.map((subject) => (
+          <option key={subject} value={subject}>
+            {subject}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
+
   </>
 )}
 

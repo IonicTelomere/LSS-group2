@@ -42,7 +42,7 @@ const queryDatabase = (query) => {
 };
 
 // POST route to handle data insertion or fetching
-app.post('/insert', async (req, res) => {
+app.post('/subjects', async (req, res) => {
     console.log("Received POST request to /insert");
     console.log("Request body:", req.body);
 
@@ -138,7 +138,7 @@ app.post('/api/register', async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
   
-      const query = 'CALL AddUser(?, ?, ?, ?, ?, ?, ?)';
+      const query = 'CALL AddUser(?, ?, ?, ?, ?, ?, ?, ?, ?)';
       connection.query(query, [email, hashedPassword, role, firstName, lastName, preference, workload || null], (err, result) => {
         if (err) {
           console.error('Database error:', err);
@@ -151,3 +151,45 @@ app.post('/api/register', async (req, res) => {
       res.status(500).json({ message: 'Something went wrong' });
     }
   });
+
+// Backend (Express) Route for Fetching Assigned Subjects
+app.get('/subjects', (req, res) => {
+    const userID = req.query.userId;
+
+    console.log('Received userID:', userID); // Log received userID
+
+    if (!userID) {
+        console.error('Missing userID in request');
+        return res.status(400).json({ error: 'Missing userId parameter' });
+    }
+
+    const query = `
+        SELECT 
+            i.SubjectID AS subjectID,
+            s.SubjectName AS subjectName,
+            i.UserID AS userId,
+            i.StartDate AS startDate,
+            i.EndDate AS endDate
+        FROM
+            SUBJECT_INSTANCE i
+        JOIN 
+            SUBJECT s 
+        ON 
+            s.SubjectID = i.SubjectID
+        WHERE 
+            i.UserID = ?
+        ORDER BY 
+            i.StartDate
+    `;
+
+    db.query(query, [userID], (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        console.log('Query Results:', results); // Log query results
+        res.json(results);
+    });
+});
+

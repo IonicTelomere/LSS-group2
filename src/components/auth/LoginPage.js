@@ -30,7 +30,10 @@ function LoginPage() {
             const data = await response.json();
             localStorage.setItem("authToken", data.token);
             localStorage.setItem("userRole", data.role);
+            localStorage.setItem("userID", data.userID); // Store userID
             console.log("Login response:", data);
+             
+    
     
             if (!data.RoleID) {
                 setError("Invalid server response: Missing RoleID.");
