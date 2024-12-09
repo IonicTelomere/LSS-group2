@@ -80,7 +80,7 @@ app.post("/api/login", (req, res) => {
     }
 
     // Query to get user by email
-    const query = "SELECT * FROM USER WHERE Email = ?";
+    const query = "SELECT * FROM APP_USER WHERE Email = ?";
     connection.execute(query, [email], (err, results) => {
         if (err) {
             return res.status(500).send("Error querying the database.");
@@ -129,27 +129,25 @@ app.get("/api/courses", (req, res) => {
 
 // Registration API endpoint
 app.post('/api/register', async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+    const { firstName, lastName, role, proficiency, preference, workload, email, password } = req.body;
+  
+    if (!email || !password || !role || !firstName || !lastName) {
+      return res.status(400).json({ message: 'All required fields must be filled' });
     }
-
+  
     try {
-        // Hash the password using bcrypt
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Ensure you have the correct table name 'users' (adjust case if needed)
-        const query = 'INSERT INTO USER (Email, PasswordHash) VALUES (?, ?)';
-        connection.query(query, [email, hashedPassword], (err, result) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ message: 'Database error' });
-            }
-            return res.status(200).json({ message: 'User registered successfully' });
-        });
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const query = 'CALL AddUser(?, ?, ?, ?, ?, ?, ?)';
+      connection.query(query, [email, hashedPassword, role, firstName, lastName, preference, workload || null], (err, result) => {
+        if (err) {
+          console.error('Database error:', err);
+          return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(200).json({ message: 'User registered successfully' });
+      });
     } catch (err) {
-        console.error('Error:', err);
-        return res.status(500).json({ message: 'Something went wrong' });
+      console.error('Error:', err);
+      res.status(500).json({ message: 'Something went wrong' });
     }
-});
+  });

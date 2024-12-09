@@ -19,6 +19,8 @@ function RegisterPage() {
     const [selectedProficiency, setSelectedProficiency] = useState("");
     const [filteredSubjects, setFilteredSubjects] = useState([]);
     const [role, setRole] = useState('');
+    const [workload, setWorkload] = useState(""); // To capture selected workload
+
     
 
   	const handleSubmit = async (e) => {
@@ -36,6 +38,7 @@ function RegisterPage() {
         role,
         proficiency,
         preference,
+        workload,
         email,
         password, 
          });
@@ -102,6 +105,7 @@ function RegisterPage() {
     "Professional and Career Development": ["Profesional Environment"],
   };
 
+
   const handleProficiencyChange = (event) => {
     const selected = event.target.value;
     setSelectedProficiency(selected);
@@ -111,6 +115,7 @@ function RegisterPage() {
   const handlePreferenceChange = (event) => {
     setPreference(event.target.value);
   };
+
 
   return (
     <Container>
@@ -172,39 +177,67 @@ function RegisterPage() {
               />
             </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Role</Form.Label>
-            <Form.Select>
-            <option>Select Role</option>
-            <option>Lecturer</option>
-            <option>Manager</option>
-            <option>Administrator</option>
-            </Form.Select>
-          </Form.Group>
-
             <Form.Group className="mb-3">
-              <Form.Label>Proficiency</Form.Label>
-              <Form.Select onChange={handleProficiencyChange} required>
-                <option value="">Select Proficiency</option>
-                {Object.keys(proficiencyToSubjects).map((proficiency) => (
-                  <option key={proficiency} value={proficiency}>
-                    {proficiency}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+  <Form.Label>Role</Form.Label>
+  <Form.Select
+    value={role}
+    onChange={(e) => setRole(e.target.value)} // Update the role state on change
+    required
+  >
+    <option value="">Select Role</option>
+    <option value="Lecturer">Lecturer</option>
+    <option value="Manager">Manager</option>
+    <option value="Administrator">Administrator</option>
+  </Form.Select>
+</Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Preference</Form.Label>
-              <Form.Select value={preference} onChange={(e) => setPreference(e.target.value)} required>
-                <option value="">Select Subject</option>
-                {filteredSubjects.map((subject) => (
-                  <option key={subject} value={subject}>
-                    {subject}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+{role === "Lecturer" && (
+  <>
+    <Form.Group className="mb-3">
+      <Form.Label>Proficiency</Form.Label>
+      <Form.Select onChange={handleProficiencyChange} required>
+        <option value="">Select Proficiency</option>
+        {Object.keys(proficiencyToSubjects).map((proficiency) => (
+          <option key={proficiency} value={proficiency}>
+            {proficiency}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
+
+        
+
+    <Form.Group className="mb-3">
+      <Form.Label>Preference</Form.Label>
+      <Form.Select value={preference} onChange={handlePreferenceChange} required>
+        <option value="">Select Subject</option>
+        {filteredSubjects.map((subject) => (
+          <option key={subject} value={subject}>
+            {subject}
+          </option>
+        ))}
+      </Form.Select>
+    </Form.Group>
+
+    
+  </>
+)}
+
+<Form.Group className="mb-3">
+  <Form.Label>Workload</Form.Label>
+  <Form.Select
+    value={workload}
+    onChange={(e) => setWorkload(e.target.value)} // Update the role state on change
+    required
+  >
+    <option value="">Select Role</option>
+    <option value="Lecturer">Lecturer</option>
+    <option value="Manager">Manager</option>
+    <option value="Administrator">Administrator</option>
+  </Form.Select>
+</Form.Group>
+
+
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>

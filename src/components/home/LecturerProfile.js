@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Stack from 'react-bootstrap/Stack';
 import Table from 'react-bootstrap/Table';
 import LogoutButton from '../auth/Logout';
+import Form from 'react-bootstrap/Form';
 
 function LecturerProfile() {
     return (
@@ -44,112 +45,18 @@ function LecturerProfile() {
                     </Nav>
 
                     {/* Top & Bottom Div */}
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column', // Stacks Top and Bottom vertically
-                            flex: 1, // Ensures it takes up remaining space
-                            gap: '20px', // Adds space between Top & Bottom
-                        }}>
-                        {/* Top Div */}
-                        <div style={{
-                                backgroundColor: 'lightblue',
-                                padding: '40px 50px 40px',
-                                borderRadius: '30px',
-                                width: '100%',
-                                maxWidth: '1000px', // Optional: Limits max width
-                        }}>
-                            <Stack direction="horizontal" gap={5}>
-                            <badge style={{
-                                padding: '10px 10px 10px 10px',
-                                borderRadius: '5px',
-                                color: 'white',
-                                textDecoration: 'none',
-                                backgroundColor: 'green',
-                                marginright: '10px'}}> Profile</badge>
-
-                            <badge style={{
-                                padding: '10px 10px 10px 10px',
-                                borderRadius: '5px',
-                                color: 'white',
-                                textDecoration: 'none',
-                                backgroundColor: 'orange'}}> Employment Type</badge>
-                            </Stack>
-                            <p></p>
-                            <Stack direction="horizontal" gap={5}>
-                                <badge style={{
-                                    padding: '10px 10px 10px 10px',
-                                    borderRadius: '5px',
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'orange'
-                                }}> First Name</badge>
-
-                                <badge style={{
-                                    padding: '10px 10px 10px 10px',
-                                    borderRadius: '5px',
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'orange'
-                                }}> Last Name</badge>
-                            </Stack>
-                            <p></p>
-                            <Stack direction="horizontal" gap={5}>
-                            <badge style={{
-                                padding: '10px 10px 10px 10px',
-                                borderRadius: '5px',
-                                color: 'white',
-                                textDecoration: 'none',
-                                backgroundColor: 'orange'
-                                }}> Skillset</badge>
-                            </Stack>
-                            <p></p>
-                            <Table bordered style={{ color: 'black', border: '2px solid black' }}>
-                                <tr style={{ color: 'white', border: '1px solid black', backgroundColor: 'purple' }}>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                </tr>
-                                <tr style={{ color: 'white', border: '2px solid black', backgroundColor: 'purple' }}>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                </tr>
-                                <tr style={{ color: 'white', border: '2px solid black', backgroundColor: 'purple' }}>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>Yes</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                    <td style={{ border: '2px solid black' }}>No</td>
-                                    <td style={{ border: '2px solid black' }}>CSEXXX</td>
-                                </tr>
-                            </Table>
-                        </div>
-
-                        {/* Bottom Div */}
-                        {/*<div
-                            style={{
-                                backgroundColor: 'lightblue',
-                                padding: '20px',
-                                borderRadius: '30px',
-                                textAlign: 'left',
-                                width: '100%',
-                                maxWidth: '1000px', // Optional: Limits max width
-                            }}>
-                        </div>*/}
-                    </div>
+                    <Form.Group className="mb-3">
+            <Form.Label>Workload</Form.Label>
+                <Form.Select>
+                    <option>1 Day Per Week</option>
+                    <option>2 Day Per Week</option>
+                    <option>3 Day Per Week</option>
+                    <option>4 Day Per Week</option>
+                    <option>5 Day Per Week</option>
+                </Form.Select>
+            </Form.Group>
+                    
+                        
                 </div>
             </Row>
         </Container>
