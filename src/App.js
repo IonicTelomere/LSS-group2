@@ -12,7 +12,7 @@ import LecturerNotification from './components/home/LecturerNotification';
 import ManagerPage from './components/home/ManagerPage';
 import ManagerSummary from './components/common/ManagerSummary';
 import LecturerProfile from "./components/home/LecturerProfile";
-
+import ManagerSchedule from "./components/home/ManagerSchedule";
 
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
           <Route path="/lecturerprofile" element={<LecturerProfile />} />
           <Route path="/managersummary" element={<ManagerSummary />} />
           <Route path="/lecturernotification" element={<LecturerNotification />} />
+          <Route path="/managerschedule" element={<ManagerSchedule />} />
           <Route
             path="/admin"
             element={
@@ -70,6 +71,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/managerschedule"
+            element={
+              <PrivateRoute requiredRoleID={20}>
+                <ManagerSchedule />
+              </PrivateRoute>
+              
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <SiteFooter />

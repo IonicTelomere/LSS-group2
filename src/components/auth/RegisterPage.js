@@ -15,6 +15,8 @@ function RegisterPage() {
     const [lastName, setLastName] = useState('');
     const [proficiency, setProficiency] = useState('');
     const [preference, setPreference] = useState('');
+    const [preference1, setPreference1] = useState('');
+    const [preference2, setPreference2] = useState('');
   	const [error, setError] = useState('');
     const [selectedProficiency, setSelectedProficiency] = useState("");
     const [filteredSubjects, setFilteredSubjects] = useState([]);
@@ -38,6 +40,8 @@ function RegisterPage() {
         role,
         proficiency,
         preference,
+        preference1,
+        preference2,
         workload,
         email,
         password, 
@@ -114,6 +118,16 @@ function RegisterPage() {
 
   const handlePreferenceChange = (event) => {
     setPreference(event.target.value);
+    
+  };
+
+  const handlePreferenceChange1 = (event) => {
+    setPreference1(event.target.value);
+  };
+
+  const handlePreferenceChange2 = (event) => {
+    setPreference2(event.target.value);
+    
   };
 
 
@@ -151,6 +165,14 @@ function RegisterPage() {
 
         {/* Right Column for Form */}
         <Col sm={9}>
+        <div
+              style={{
+                backgroundColor: 'lightblue',
+                padding: '40px 50px 40px',
+                borderRadius: '30px',
+                textAlign: 'left',
+              }}
+            >
           <h1>Register</h1>
           <Form onSubmit={handleSubmit} >
             <Form.Group className="mb-3">
@@ -221,7 +243,7 @@ function RegisterPage() {
 
     <Form.Group className="mb-3">
       <Form.Label>Preference</Form.Label>
-      <Form.Select value={preference} onChange={handlePreferenceChange} required>
+      <Form.Select value={preference1} onChange={handlePreferenceChange1} required>
         <option value="">Select Subject</option>
         {filteredSubjects.map((subject) => (
           <option key={subject} value={subject}>
@@ -233,7 +255,7 @@ function RegisterPage() {
     
     <Form.Group className="mb-3">
       <Form.Label>Preference</Form.Label>
-      <Form.Select value={preference} onChange={handlePreferenceChange} required>
+      <Form.Select value={preference2} onChange={handlePreferenceChange2} required>
         <option value="">Select Subject</option>
         {filteredSubjects.map((subject) => (
           <option key={subject} value={subject}>
@@ -304,6 +326,7 @@ function RegisterPage() {
               Register &gt;&gt;
             </Button>
           </Form>
+          </div>
         </Col>
       </Row>
     </Container>

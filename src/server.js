@@ -129,7 +129,7 @@ app.get("/api/courses", (req, res) => {
 
 // Registration API endpoint
 app.post('/api/register', async (req, res) => {
-    const { firstName, lastName, role, proficiency, preference, workload, email, password } = req.body;
+    const { firstName, lastName, role, proficiency, preference, preference1, preference2, workload, email, password } = req.body;
   
     if (!email || !password || !role || !firstName || !lastName) {
       return res.status(400).json({ message: 'All required fields must be filled' });
@@ -139,7 +139,7 @@ app.post('/api/register', async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       const query = 'CALL AddUser(?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      connection.query(query, [email, hashedPassword, role, firstName, lastName, preference, workload || null], (err, result) => {
+      connection.query(query, [email, hashedPassword, role, firstName, lastName, preference, preference1, preference2, workload || null], (err, result) => {
         if (err) {
           console.error('Database error:', err);
           return res.status(500).json({ message: 'Database error' });

@@ -32,6 +32,16 @@ function ManagerPage() {
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
                                 }}>Subject Summary</Nav.Link>
+                                <Nav.Link
+                                href="/managerschedule"
+                                style={{
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    color: 'black',
+                                    textDecoration: 'none',
+                                    backgroundColor: 'white',
+                                    marginBottom: '10px',
+                                }}>Lecturer Assignment</Nav.Link>
                              <LogoutButton />
                         </Nav>
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
