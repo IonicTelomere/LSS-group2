@@ -9,28 +9,27 @@ import axios from 'axios';
 import LogoutButton from '../auth/Logout';
 
 function LecturerNotification() {
-  const [subjects, setSubjects] = useState([]); // State for subjects
-  const userID = '3'; // Replace with dynamic userID if needed
+  const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-  // Fetch subjects assigned to the lecturer by UserID
-  useEffect(() => {
-    const fetchAssignedSubjects = async () => {
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
-            console.log('Fetching subjects for userID:', userID);
-            const response = await axios.get(`http://localhost:3000/subjects?userId=${userID}`);
-            console.log('API Response:', response.data);
-            setSubjects(response.data);
-            console.log('Received userID:', userID);
-        } catch (error) {
-            console.error('Error fetching assigned subjects:', error);
+            // Replace with your actual backend URL (adjust port if needed)
+            const response = await axios.post('http://localhost:3000/insert', {
+            });
+
+            setData(response.data);  // Set the received data to state
+        } catch (err) {
+            setError('Error fetching data from the backend');
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
-
-    if (userID) fetchAssignedSubjects(); // Fetch only if userID exists
-}, [userID]);// Ensure the effect runs when userID changes
-
-  
-  
 
   return (
     <Container>
@@ -84,32 +83,35 @@ function LecturerNotification() {
               }}
             >
               <h3>Assigned Subjects</h3>
-              <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>Subject ID</th>
-      <th>Subject Name</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-    </tr>
-  </thead>
-  <tbody>
-{Array.isArray(subjects) && subjects.length > 0 ? (
-    subjects.map((subject, index) => (
-        <tr key={index}>
-            <td>{subject.subjectID}</td>
-            <td>{subject.subjectName}</td>
-            <td>{subject.startDate}</td>
-            <td>{subject.endDate}</td>
-        </tr>
-    ))
-) : (
-    <tr>
-        <td colSpan="4">No subjects assigned</td>
-    </tr>
-)}
-</tbody>
-</Table>
+              <button onClick={fetchData} disabled={loading}>
+                {loading ? 'Loading...' : 'Fetch Data'}
+            </button>
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            {data.length > 0 ? (
+                <table>
+                    <thead>
+                        <tr>
+                            {/* Adjust the headers based on your data structure */}
+                            {Object.keys(data[0]).map((key) => (
+                                <th key={key}>{key}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={index}>
+                                {Object.values(item).map((value, i) => (
+                                    <td key={i}>{JSON.stringify(value)}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No data available</p>
+            )}
 
             </div>
           </div>
