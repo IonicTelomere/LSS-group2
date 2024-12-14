@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import logo from '../Img/LSS.png';
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -71,6 +72,19 @@ function LoginPage() {
                     maxWidth: "500px",
                 }}
             >
+
+                <div className="text-center mb-4">
+                        <img
+                            src={logo}
+                            alt="LSS Logo"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                marginBottom: "20px",
+                                borderRadius: "10px"
+                            }}
+                        />
+                    </div>
                 <Col>
                     <h3 className="text-center mb-4" style={{ color: "#3399ff" }}>
                         Login
