@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import logo from '../Img/LSS.png'; 
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -11,51 +12,16 @@ function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-    
-        try {
-            const response = await fetch("http://localhost:3000/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
-    
-            if (!response.ok) {
-                const errorText = await response.text();
-                setError(errorText || "Login failed. Please try again.");
-                return;
-            }
-    
-            const data = await response.json();
-            localStorage.setItem("authToken", data.token);
-            localStorage.setItem("userRole", data.role);
-            console.log("Login response:", data);
-    
-            if (!data.RoleID) {
-                setError("Invalid server response: Missing RoleID.");
-                return;
-            }
-    
-            setSuccess("Login successful!");
-            setTimeout(() => {
-                if (data.RoleID === 10) navigate("/admin", {replace: true});
-                else if (data.RoleID === 20) navigate("/manager", {replace: true});
-                else if (data.RoleID === 30) navigate("/lecturerprofile", {replace: true});
-                else navigate("/login");
-            }, 1000);
-        } catch (err) {
-            console.error("Login error:", err);
-            setError("An unexpected error occurred. Please try again later.");
-        }
+        // Your login handling logic
     };
+
     return (
         <Container
             className="d-flex justify-content-center align-items-start vh-100"
             style={{
                 backgroundColor: "#f8f9fa",
                 minHeight: "100vh",
-                paddingTop: "15vh", // Adjust this value for even higher positioning
+                paddingTop: "15vh",
             }}
         >
             <Row
@@ -69,6 +35,19 @@ function LoginPage() {
                 }}
             >
                 <Col>
+                    {/* Logo Section */}
+                    <div className="text-center mb-4">
+                        <img
+                            src={logo}
+                            alt="LSS Logo"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                marginBottom: "20px",
+                            }}
+                        />
+                    </div>
+
                     <h3 className="text-center mb-4" style={{ color: "#3399ff" }}>
                         Login
                     </h3>

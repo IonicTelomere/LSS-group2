@@ -12,8 +12,7 @@ import LecturerNotification from './components/home/LecturerNotification';
 import ManagerPage from './components/home/ManagerPage';
 import ManagerSummary from './components/common/ManagerSummary';
 import LecturerProfile from "./components/home/LecturerProfile";
-
-
+import DataBase from './components/home/DataBase'; // Import the new component
 
 function App() {
   const { user } = useUser();
@@ -28,6 +27,7 @@ function App() {
           <Route path="/lecturerprofile" element={<LecturerProfile />} />
           <Route path="/managersummary" element={<ManagerSummary />} />
           <Route path="/lecturernotification" element={<LecturerNotification />} />
+          <Route path="/DataBase" element={<DataBase />} /> {/* New route for DataBase */}
           <Route
             path="/admin"
             element={
@@ -42,16 +42,14 @@ function App() {
               <PrivateRoute requiredRoleID={20}>
                 <ManagerPage />
               </PrivateRoute>
-              
             }
           />
-            <Route
+          <Route
             path="/managersummary"
             element={
               <PrivateRoute requiredRoleID={20}>
                 <ManagerSummary />
               </PrivateRoute>
-              
             }
           />
           <Route
@@ -62,7 +60,7 @@ function App() {
               </PrivateRoute>
             }
           />
-             <Route
+          <Route
             path="/lecturernotification"
             element={
               <PrivateRoute requiredRoleID={30}>
@@ -76,6 +74,5 @@ function App() {
     </UserProvider>
   );
 }
-
 
 export default App;

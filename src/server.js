@@ -2,24 +2,20 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const bcrypt = require("bcrypt");
-const axios = require('axios');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const path = require('path');
 
 // Initialize the express application
 const app = express();
 const PORT = 3000;
 
-app.use(express.static(path.join(__dirname, "build")));
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
-
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'build')));
 
+// MySQL database connection
 const connection = mysql.createConnection({
     host: 'lss-database-1.cresoi04ckm5.ap-southeast-2.rds.amazonaws.com',
     user: 'admin',                  // Replace with your MySQL username
@@ -29,82 +25,75 @@ const connection = mysql.createConnection({
 });
 
 // Helper function to use async/await with mysql2
-const queryDatabase = (query) => {
+const queryDatabase = (query, params = []) => {
     return new Promise((resolve, reject) => {
-        connection.query(query, (err, results) => {
+        connection.query(query, params, (err, results) => {
             if (err) {
-                reject(err); // Reject the promise if there's an error
+                reject(err);
             } else {
-                resolve(results); // Resolve the promise with the results
+                resolve(results);
             }
         });
     });
 };
 
-// POST route to handle data insertion or fetching
-app.post('/insert', async (req, res) => {
-    console.log("Received POST request to /insert");
-    console.log("Request body:", req.body);
+// Token secret
+const JWT_SECRET = 'your-secret-key'; // Replace with a strong secret key
 
-    const query = 'SELECT * FROM SubjectMonthlySchedule';
+// Authentication middleware
+const authenticateUser = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Authentication token is required' });
+    }
 
     try {
-        const results = await queryDatabase(query);  // Await the promise
-        res.status(200).json(results);  // Send the query results as JSON
-    } catch (error) {
-        console.error('Detailed Error:', error);  // Log the error for debugging
-        res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });  // Send more detailed error message to the client
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.userId = decoded.userId; // Attach userId to request object
+        next();
+    } catch (err) {
+        res.status(401).json({ message: 'Invalid or expired token' });
     }
+};
+
+// Routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Connect to the RDS database
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to RDS MySQL:', err.stack);
-        return;
-    }
-    console.log('Connected to RDS MySQL as ID ' + connection.threadId);
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-// Login
-app.post("/api/login", (req, res) => {
+// User login
+app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Validate input
     if (!email || !password) {
-        return res.status(400).send("Email and password are required.");
+        return res.status(400).json({ message: 'Email and password are required.' });
     }
 
-    // Query to get user by email
-    const query = "SELECT * FROM USER WHERE Email = ?";
+    const query = 'SELECT * FROM USER WHERE Email = ?';
     connection.execute(query, [email], (err, results) => {
         if (err) {
-            return res.status(500).send("Error querying the database.");
+            return res.status(500).json({ message: 'Error querying the database.' });
         }
 
         if (results.length === 0) {
-            return res.status(401).send("Invalid email or password.");
+            return res.status(401).json({ message: 'Invalid email or password.' });
         }
 
-        // Compare password with hashed password stored in database
         const user = results[0];
         bcrypt.compare(password, user.PasswordHash, (err, isMatch) => {
             if (err) {
-                return res.status(500).send("Error comparing passwords.");
+                return res.status(500).json({ message: 'Error comparing passwords.' });
             }
 
             if (!isMatch) {
-                return res.status(401).send("Invalid email or password.");
+                return res.status(401).json({ message: 'Invalid email or password.' });
             }
 
-            // Return user data, including role
-            return res.json({
+            const token = jwt.sign({ userId: user.UserID }, JWT_SECRET, { expiresIn: '1h' });
+            res.json({
+                token,
                 UserID: user.UserID,
-                RoleID: user.RoleID,  // Return RoleID for role-based redirection
+                RoleID: user.RoleID, // Return RoleID for role-based redirection
                 FirstName: user.FirstName,
                 LastName: user.LastName,
                 Email: user.Email,
@@ -113,8 +102,50 @@ app.post("/api/login", (req, res) => {
     });
 });
 
+// User registration
+app.post('/api/register', async (req, res) => {
+    const { firstName, lastName, role, proficiency, preference, preference1, preference2, workload, email, password } = req.body;
 
-app.get("/api/courses", (req, res) => {
+    if (!email || !password || !role || !firstName || !lastName) {
+        return res.status(400).json({ message: 'All required fields must be filled' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+   
+        const query = 'CALL AddUser(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        connection.query(query, [email, hashedPassword, role, firstName, lastName, preference, preference1, preference2, workload || null], (err, result) => {
+          if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ message: 'Database error' });
+          }
+          res.status(200).json({ message: 'User registered successfully' });
+        });
+      } catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({ message: 'Something went wrong' });
+      }
+    });
+
+// Fetch filtered LecturerSchedule for events
+app.get('/api/lecturer-events', authenticateUser, async (req, res) => {
+    const query = 'SELECT * FROM LecturerSchedule WHERE UserID = ? ORDER BY StartDate';
+
+    try {
+        const results = await queryDatabase(query, [req.userId]);
+        const formattedResults = results.map(schedule => ({
+            date: schedule.StartDate,
+            title: schedule.Title || `Lecture: ${schedule.Subject}`, // Adjust as needed
+        }));
+        res.status(200).json(formattedResults);
+    } catch (error) {
+        console.error('Error fetching LecturerSchedule:', error);
+        res.status(500).json({ message: 'Failed to fetch LecturerSchedule', error: error.message });
+    }
+});
+
+// Fetch all courses
+app.get('/api/courses', (req, res) => {
     const query = 'SELECT * FROM courses';
     connection.query(query, (err, results) => {
         if (err) {
@@ -126,30 +157,16 @@ app.get("/api/courses", (req, res) => {
     });
 });
 
-
-// Registration API endpoint
-app.post('/api/register', async (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+// Connect to the RDS database
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to RDS MySQL:', err.stack);
+        return;
     }
+    console.log('Connected to RDS MySQL as ID ' + connection.threadId);
+});
 
-    try {
-        // Hash the password using bcrypt
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Ensure you have the correct table name 'users' (adjust case if needed)
-        const query = 'INSERT INTO USER (Email, PasswordHash) VALUES (?, ?)';
-        connection.query(query, [email, hashedPassword], (err, result) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ message: 'Database error' });
-            }
-            return res.status(200).json({ message: 'User registered successfully' });
-        });
-    } catch (err) {
-        console.error('Error:', err);
-        return res.status(500).json({ message: 'Something went wrong' });
-    }
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

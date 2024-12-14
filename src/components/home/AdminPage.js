@@ -3,11 +3,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import DatePicker from 'react-date-picker';
 import { useState } from 'react';
 import LogoutButton from '../auth/Logout';
+import '../style/style.css';
 
 function AdminPage() {
     const session = useSession(); // Tokes, When session exists we have user
@@ -17,11 +17,9 @@ function AdminPage() {
     const [end, setEnd] = useState(new Date());
     const [eventName, setEventName] = useState("");
     const [eventDescription, setEventDescription] = useState("");
-
     if (isLoading) {
         return<></>
     }
-
     async function googleSignIn() {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
@@ -34,7 +32,6 @@ function AdminPage() {
             console.log(error);
         }
     }
-
     async function createCalendarEvent() {
         console.log("Creating calendar event");
         const event = {
@@ -64,13 +61,11 @@ function AdminPage() {
         });
     }
 
-
     async function signOut() {
         await supabase.auth.signOut();
     }
     console.log(session);
     console.log(start);
-
     return (
         <Container>
             <Row>
@@ -110,7 +105,6 @@ function AdminPage() {
                             </Nav.Link>
                             <LogoutButton />
                         </Nav>
-
                         {/* Notes and Calendar Divs */}
                         <div
                             style={{
@@ -161,7 +155,6 @@ function AdminPage() {
                                 </div>
                                 <p>Notes/Announcements</p>
                             </div>
-
                             {/* Calendar Div */}
                             <div
                                 style={{
@@ -190,9 +183,7 @@ function AdminPage() {
                 </Col>
             </Row>
         </Container>
-
     )
 }
-
 
 export default AdminPage;

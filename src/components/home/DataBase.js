@@ -11,14 +11,14 @@ function DataBase() {
         setError(null);
 
         try {
-            // Replace with your actual backend URL (adjust port if needed)
-            const response = await axios.post('http://localhost:3000/insert', {
-                // You can send data in the request body if needed
-                // For example:
-                // data: 'someData'
+            // Fetch the token from localStorage or your auth state
+            const token = localStorage.getItem('authToken'); // Replace with your token retrieval logic
+            const response = await axios.get('http://localhost:3000/api/lecturer-schedule', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-
-            setData(response.data);  // Set the received data to state
+            setData(response.data); // Set the received data to state
         } catch (err) {
             setError('Error fetching data from the backend');
             console.error(err);
@@ -33,14 +33,11 @@ function DataBase() {
             <button onClick={fetchData} disabled={loading}>
                 {loading ? 'Loading...' : 'Fetch Data'}
             </button>
-
             {error && <p style={{ color: 'red' }}>{error}</p>}
-
             {data.length > 0 ? (
                 <table>
                     <thead>
                         <tr>
-                            {/* Adjust the headers based on your data structure */}
                             {Object.keys(data[0]).map((key) => (
                                 <th key={key}>{key}</th>
                             ))}

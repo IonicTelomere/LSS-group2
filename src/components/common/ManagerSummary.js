@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import LogoutButton from '../auth/Logout';
+import '../style/style.css';
 
 function ManagerSummary() {
     return (
@@ -63,5 +64,4 @@ function ManagerSummary() {
         </Container>
     )
 }
-
 export default ManagerSummary;

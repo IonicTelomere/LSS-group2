@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,12 +10,9 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import axios from 'axios';
 import LogoutButton from '../auth/Logout';
-
 // Setup localizer for react-big-calendar
 const localizer = momentLocalizer(moment);
-
 function LecturerNotification() {
-
   // EventCalendar function to display the calendar
   const EventCalendar = () => {
     const [events, setEvents] = useState([]);
@@ -47,7 +43,6 @@ function LecturerNotification() {
     const renderYearView = () => {
       const months = [];
       const currentYear = new Date().getFullYear();
-
       // Create 12 month views
       for (let i = 0; i < 12; i++) {
         months.push(
@@ -64,14 +59,12 @@ function LecturerNotification() {
           </Col>
         );
       }
-
       return (
         <Row style={{ display: 'flex', flexWrap: 'wrap' }}>
           {months}
         </Row>
       );
     };
-
     return (
       <div>
         <div style={{ marginBottom: '20px' }}>
@@ -96,7 +89,6 @@ function LecturerNotification() {
       </div>
     );
   };
-
   return (
     <Container>
       <Row>
@@ -121,7 +113,6 @@ function LecturerNotification() {
             <Nav.Link eventKey="link-1">Navigation2</Nav.Link>
             <LogoutButton />
           </Nav>
-
           {/* Notes and Calendar Divs */}
           <div
             style={{
@@ -148,7 +139,6 @@ function LecturerNotification() {
                 </Toast>
               </ToastContainer>
             </div>
-
             {/* Calendar Div */}
             <div style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px' }}>
               {/* Render EventCalendar component to show the calendar */}
@@ -160,5 +150,4 @@ function LecturerNotification() {
     </Container>
   );
 }
-
 export default LecturerNotification;
