@@ -28,6 +28,19 @@ function ManagerSchedule() {
         }
     };
 
+    const assignSubject = async (subjectId, lecturerId) => {
+        try {
+            const response = await axios.post('http://localhost:3000/assign-subject', {
+                subjectId,
+                lecturerId,
+            });
+    
+            console.log(response.data.message);
+        } catch (error) {
+            console.error(error.response?.data?.error || 'Error assigning subject');
+        }
+    };
+
     return (
         <Container fluid>
             <Row className="my-5">

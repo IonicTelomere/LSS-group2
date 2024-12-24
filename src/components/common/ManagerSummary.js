@@ -30,6 +30,8 @@ function ManagerSummary() {
         }
     };
 
+    
+
     return (
         <Container>
             <Row>
