@@ -3,7 +3,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-
 import { useSession, useSupabaseClient, useSessionContext } from '@supabase/auth-helpers-react';
 import DatePicker from 'react-date-picker';
 import { useState } from 'react';
@@ -80,7 +79,6 @@ function AdminPage() {
                         style={{
                             display: 'flex', // Enables horizontal layout
                             alignItems: 'flex-start', // Aligns items at the top
-                            gap: '20px', // Adds space between Nav and content
                         }}
                     >
                         {/* Nav Div */}
@@ -89,9 +87,10 @@ function AdminPage() {
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px 20px 540px',
+                                padding: '20px 20px 500px',
                                 borderRadius: '30px',
-                                width: '130px', // Fixed width for consistent layout
+                                marginRight: '20px',
+                                width: '250px', // Fixed width for consistent layout
                             }}
                         >
                             <Nav.Link
@@ -100,14 +99,11 @@ function AdminPage() {
                                     padding: '10px',
                                     borderRadius: '5px',
                                     color: 'black',
-                                    textDecoration: 'none',
+                                    textAlign: 'center',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
                                     borderColor: 'white',
-                                }}
-                            >
-                                Register
-                            </Nav.Link>
+                                }}>Register New Users</Nav.Link>
                             <LogoutButton />
                         </Nav>
 

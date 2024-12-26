@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Nav from 'react-bootstrap/Nav';
+import LogoutButton from '../auth/Logout';
 
 function RegisterPage() {
 	  const [email, setEmail] = useState('');
@@ -133,19 +134,24 @@ function RegisterPage() {
 
   return (
     <Container>
-      <Row className="justify-content-center my-5">
-        {/* Slimmer Nav */}
-        <Col sm={2}>
+      <Row>
+              <Col>
+                  <h1>Register New Users</h1>
+                  <div
+                      style={{
+                          display: 'flex', // Enables horizontal layout
+                          alignItems: 'flex-start', // Aligns items at the top
+                      }}>
           <Nav
             defaultActiveKey="/home"
             className="flex-column"
-            style={{
-                backgroundColor: 'lightblue',
-                padding: '20px 20px 540px',
-                borderRadius: '30px',
-                width: '130px', // Full width of the column
-            }}
-          >
+                      style={{
+                          backgroundColor: 'lightblue',
+                          padding: '20px 20px 500px',
+                          borderRadius: '30px',
+                          marginRight: '20px',
+                          width: '250px', // Fixed width for consistent layout
+                      }}>
             <Nav.Link
               href="/admin"
               style={{
@@ -155,25 +161,20 @@ function RegisterPage() {
                 color: 'black',
                 textAlign: 'center',
                 marginBottom: '10px',
-              }}
-            >
-              Admin Page
-            </Nav.Link>
+              }}>Admin Page</Nav.Link>
+              <LogoutButton />
             {/* Add more links as needed */}
           </Nav>
-        </Col>
 
         {/* Right Column for Form */}
-        <Col sm={9}>
         <div
-              style={{
-                backgroundColor: 'lightblue',
-                padding: '40px 50px 40px',
-                borderRadius: '30px',
-                textAlign: 'left',
-              }}
-            >
-          <h1>Register</h1>
+                          style={{
+                              backgroundColor: 'lightblue',
+                              padding: '20px 20px 20px 20px',
+                              borderRadius: '30px',
+                              width: '600px'
+                          }}>
+          
           <Form onSubmit={handleSubmit} >
             <Form.Group className="mb-3">
               <Form.Label>First Name</Form.Label>
@@ -326,7 +327,8 @@ function RegisterPage() {
               Register &gt;&gt;
             </Button>
           </Form>
-          </div>
+                      </div>
+                      </div>
         </Col>
       </Row>
     </Container>

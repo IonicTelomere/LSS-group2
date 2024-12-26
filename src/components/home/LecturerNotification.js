@@ -34,7 +34,7 @@ function LecturerNotification() {
   return (
     <Container>
       <Row>
-        <h1>Lecturer Page</h1>
+        <h1>Notifications & Calendar</h1>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
           <Nav
             defaultActiveKey="/home"
@@ -43,27 +43,30 @@ function LecturerNotification() {
               backgroundColor: 'lightblue',
               padding: '20px 20px 610px',
               borderRadius: '30px',
-              width: '250px',
-            }}
-          >
-            <Nav.Link href="/home">Home Page</Nav.Link>
-            <Nav.Link eventKey="link-1">Navigation2</Nav.Link>
+              width: '250px'}}>
+
+            <Nav.Link href="/lecturerprofile"
+                      style={{
+                      padding: '10px',
+                      borderRadius: '5px',
+                      backgroundColor: 'white',
+                      color: 'black',
+                      textAlign: 'center',
+                      marginBottom: '10px'
+                          }}>Your Profile</Nav.Link>
             <LogoutButton />
           </Nav>
 
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '20px' }}>
-            <div
-              style={{
+            <div style={{
                 backgroundColor: 'lightblue',
-                padding: '40px 50px 40px',
+                padding: '20px 20px 40px',
                 borderRadius: '30px',
-                textAlign: 'center',
-              }}
-            >
-              <ToastContainer
+                textAlign: 'center', }}>
+                <h3 style={{ textAlign: 'left', }}>Notifications</h3>
+                <ToastContainer
                 className="position-static"
-                style={{ display: 'flex', gap: '10px', flexWrap: 'nowrap' }}
-              >
+                style={{ display: 'flex', gap: '10px', flexWrap: 'nowrap' }}>
                 <Toast>
                   <Toast.Header>
                     <strong className="me-auto">Urgent</strong>

@@ -36,7 +36,7 @@ function ManagerSummary() {
         <Container>
             <Row>
                 <Col>
-                    <h1>Manager Page</h1>
+                    <h1>Subject Summary</h1>
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                         {/* Navigation Sidebar */}
                         <Nav
@@ -44,35 +44,40 @@ function ManagerSummary() {
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px',
+                                padding: '20px 20px 500px',
                                 borderRadius: '30px',
-                                width: '250px',
-                            }}
-                        >
+                                marginRight: '20px',
+                                width: '250px', // Fixed width for consistent layout
+                            }}>
                             <Nav.Link
                                 href="/manager"
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
                                     color: 'black',
-                                    textDecoration: 'none',
+                                    textAlign: 'center',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
-                                }}
-                            >
-                                Manager Home
-                            </Nav.Link>
+                                }}>Manager Home</Nav.Link>
+                            <Nav.Link
+                                href="/managerschedule"
+                                style={{
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    color: 'black',
+                                    textAlign: 'center',
+                                    backgroundColor: 'white',
+                                    marginBottom: '10px',
+                                }}>Lecturer Assignment</Nav.Link>
                             <LogoutButton />
                         </Nav>
                         {/* Main Content */}
-                        <div style={{ flex: 1, padding: '20px' }}>
-                            <div
-                                style={{
-                                    backgroundColor: 'lightblue',
-                                    padding: '20px',
-                                    borderRadius: '30px',
-                                }}
-                            >
+                        <div style={{
+                            backgroundColor: 'lightblue',
+                            padding: '20px 20px 500px',
+                            borderRadius: '30px',
+                            flex: 1, // Allow this div to take up remaining space
+                        }}>
                                 <h3>Assigned Subjects</h3>
                                 <button onClick={fetchData} disabled={loading}>
                                     {loading ? 'Loading...' : 'Fetch Data'}
@@ -130,7 +135,6 @@ function ManagerSummary() {
                                 )}
                             </div>
                         </div>
-                    </div>
                 </Col>
             </Row>
         </Container>

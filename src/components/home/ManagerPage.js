@@ -9,17 +9,18 @@ function ManagerPage() {
         <Container>
             <Row>
                 <Col>
-                    <h1>Manager Page</h1>
+                    <h1>Manager Home</h1>
+                    {/* First Div */}
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                        {/* First Div */}
                         {/* Nav Div */}
                         <Nav
                             defaultActiveKey="/home"
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px 20px 520px',
+                                padding: '20px 20px 500px',
                                 borderRadius: '30px',
+                                marginRight: '20px',
                                 width: '250px', // Fixed width for consistent layout
                             }}>
                             <Nav.Link
@@ -28,7 +29,7 @@ function ManagerPage() {
                                     padding: '10px',
                                     borderRadius: '5px',
                                     color: 'black',
-                                    textDecoration: 'none',
+                                    textAlign: 'center',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
                                 }}>Subject Summary</Nav.Link>
@@ -38,24 +39,22 @@ function ManagerPage() {
                                     padding: '10px',
                                     borderRadius: '5px',
                                     color: 'black',
-                                    textDecoration: 'none',
+                                    textAlign: 'center',
                                     backgroundColor: 'white',
                                     marginBottom: '10px',
                                 }}>Lecturer Assignment</Nav.Link>
                              <LogoutButton />
                         </Nav>
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             {/* Second Div with Padding */}
                             <div style={{
                                 backgroundColor: 'lightblue',
-                                padding: '100px 780px 440px 100px',
+                                padding: '100px 780px 570px 100px',
                                 borderRadius: '30px',
-                                textAlign: 'left',
+                                flex: 1, // Allow this column to take up remaining space
                             }}>
                                 <p></p>
                             </div>
                         </div>
-                    </div>
                 </Col>
             </Row>
         </Container>

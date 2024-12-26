@@ -25,37 +25,78 @@ function LecturerProfile() {
                             backgroundColor: 'lightblue',
                             padding: '20px 20px 610px',
                             borderRadius: '30px',
-                            width: '250px', // Fixed width for consistent layout
+                            width: '250px'
                         }}>
+
                             <Nav.Link
                                 href="/lecturernotification"
-                                style={{
-                                    padding: '10px',
-                                    borderRadius: '5px',
-                                    color: 'black',
-                                    textDecoration: 'none',
-                                    backgroundColor: 'white',
-                                    marginBottom: '10px',
-                                }}
-                            >
-                                Notifications & Calendar View
+                            style={{
+                                padding: '10px',
+                                borderRadius: '5px',
+                                backgroundColor: 'white',
+                                color: 'black',
+                                textAlign: 'center',
+                                marginBottom: '10px'
+                            }}>
+                                Notifications & Calendar
                             </Nav.Link>
                         
                             <LogoutButton />
                     </Nav>
 
                     {/* Top & Bottom Div */}
+                    <div style={{
+                        backgroundColor: 'lightblue',
+                        padding: '40px 50px 40px',
+                        borderRadius: '30px',
+                        width: '100%',
+                        maxWidth: '1000px', // Optional: Limits max width
+                    }}>
+                        
+                        <Stack direction="horizontal" gap={5}>
+                            <badge style={{
+                                padding: '10px 10px 10px 10px',
+                                borderRadius: '5px',
+                                color: 'white',
+                                textDecoration: 'none',
+                                backgroundColor: 'orange'
+                            }}> First Name</badge>
+
+                            <badge style={{
+                                padding: '10px 10px 10px 10px',
+                                borderRadius: '5px',
+                                color: 'white',
+                                textDecoration: 'none',
+                                backgroundColor: 'orange'
+                            }}> Last Name</badge>
+                            <badge style={{
+                                padding: '10px 10px 10px 10px',
+                                borderRadius: '5px',
+                                color: 'white',
+                                textDecoration: 'none',
+                                backgroundColor: 'orange'
+                            }}> Employment Type</badge>
+                            <badge style={{
+                                padding: '10px 10px 10px 10px',
+                                borderRadius: '5px',
+                                color: 'white',
+                                textDecoration: 'none',
+                                backgroundColor: 'orange'
+                            }}> Skillset</badge>
+                        </Stack>
+                       
+                        <p> </p>
                     <Form.Group className="mb-3">
-            <Form.Label>Workload</Form.Label>
-                <Form.Select>
-                    <option>1 Day Per Week</option>
-                    <option>2 Day Per Week</option>
-                    <option>3 Day Per Week</option>
-                    <option>4 Day Per Week</option>
-                    <option>5 Day Per Week</option>
-                </Form.Select>
-            </Form.Group>
-                    
+                        <Form.Label>Workload</Form.Label>
+                            <Form.Select>
+                                <option>1 Day Per Week</option>
+                                <option>2 Day Per Week</option>
+                                <option>3 Day Per Week</option>
+                                <option>4 Day Per Week</option>
+                                <option>5 Day Per Week</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </div>
                         
                 </div>
             </Row>
