@@ -9,32 +9,59 @@ import Nav from 'react-bootstrap/Nav';
 import LogoutButton from '../auth/Logout';
 
 function ManagerSchedule() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [subjectId, setSubjectId] = useState('');
+    const [lecturerId, setLecturerId] = useState('');
+    const [specialisationData, setSpecialisationData] = useState([]);
+    const [unallocatedData, setUnallocatedData] = useState([]);
+    const [loadingSpecialisation, setLoadingSpecialisation] = useState(false);
+    const [loadingUnallocated, setLoadingUnallocated] = useState(false);
+    const [errorSpecialisation, setErrorSpecialisation] = useState(null);
+    const [errorUnallocated, setErrorUnallocated] = useState(null);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
+    const fetchUnallocatedData = async () => {
+        setLoadingUnallocated(true);
+        setErrorUnallocated(null);
 
         try {
             const response = await axios.post('http://localhost:3000/insert', {});
-            setData(response.data); // Set the received data to state
+            setUnallocatedData(response.data);
         } catch (err) {
-            setError('Error fetching data from the backend');
+            setErrorUnallocated('Error fetching unallocated data from the backend');
             console.error(err);
         } finally {
-            setLoading(false);
+            setLoadingUnallocated(false);
         }
     };
 
-    const assignSubject = async (subjectId, lecturerId) => {
+    const fetchSpecialisationData = async () => {
+        setLoadingSpecialisation(true);
+        setErrorSpecialisation(null);
+
+        try {
+            const response = await axios.post('http://localhost:3000/displaysubject', {});
+            setSpecialisationData(response.data);
+        } catch (err) {
+            setErrorSpecialisation('Error fetching specialisation data from the backend');
+            console.error(err);
+        } finally {
+            setLoadingSpecialisation(false);
+        }
+    };
+
+    const assignSubject = async (e) => {
+        e.preventDefault();
+        if (!subjectId || !lecturerId) {
+            console.error("subjectId and lecturerId are required");
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:3000/assign-subject', {
                 subjectId,
                 lecturerId,
             });
             console.log(response.data.message);
+            setSubjectId('');
+            setLecturerId('');
         } catch (error) {
             console.error(error.response?.data?.error || 'Error assigning subject');
         }
@@ -54,8 +81,8 @@ function ManagerSchedule() {
                                 backgroundColor: 'lightblue',
                                 padding: '20px 20px 500px',
                                 borderRadius: '30px',
-                                width: '250px', // Fixed width for consistent layout
-                                marginRight: '20px', // Space between nav and form
+                                width: '250px',
+                                marginRight: '20px',
                             }}>
                             <Nav.Link
                                 href="/manager"
@@ -83,57 +110,94 @@ function ManagerSchedule() {
                         {/* Middle - Form */}
                         <div style={{
                             backgroundColor: 'lightblue',
-                            padding: '20px 20px 235px',
+                            padding: '20px',
                             borderRadius: '30px',
-                            marginRight: '20px', // Space to the right
-                            width: '450px' // Fixed width for the form
+                            marginRight: '20px',
+                            width: '450px'
                         }}>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="subjectInput">Subject</Form.Label>
-                                <Form.Control id="subjectInput" placeholder="Subject" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="lecturerInput">Lecturer</Form.Label>
-                                <Form.Control id="lecturerInput" placeholder="Lecturer" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="startDateInput">Start Date</Form.Label>
-                                <Form.Control id="startDateInput" placeholder="Start Date" />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="endDateInput">End Date</Form.Label>
-                                <Form.Control id="endDateInput" placeholder="End Date" />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Submit &gt;&gt;
-                            </Button>
+                            <Form onSubmit={assignSubject}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label htmlFor="subjectIdInput">Subject ID</Form.Label>
+                                    <Form.Control
+                                        id="subjectIdInput"
+                                        placeholder="Enter Subject ID"
+                                        value={subjectId}
+                                        onChange={(e) => setSubjectId(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label htmlFor="lecturerIdInput">Lecturer ID</Form.Label>
+                                    <Form.Control
+                                        id="lecturerIdInput"
+                                        placeholder="Enter Lecturer ID"
+                                        value={lecturerId}
+                                        onChange={(e) => setLecturerId(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Button variant="primary" type="submit">
+                                    Assign
+                                </Button>
+                            </Form>
+
+                            {/* Lecturer Specialisation Section */}
+                            <div style={{ marginTop: '20px' }}>
+                                <h3>Lecturer Specialisation</h3>
+                                <button onClick={fetchSpecialisationData} disabled={loadingSpecialisation}>
+                                    {loadingSpecialisation ? 'Loading...' : 'Fetch Data'}
+                                </button>
+
+                                {errorSpecialisation && <p style={{ color: 'red' }}>{errorSpecialisation}</p>}
+
+                                {specialisationData.length > 0 ? (
+                                    <table style={{ width: '100%' }}>
+                                        <thead>
+                                            <tr>
+                                                {Object.keys(specialisationData[0]).map((key) => (
+                                                    <th key={key}>{key}</th>
+                                                ))}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {specialisationData.map((item, index) => (
+                                                <tr key={index}>
+                                                    {Object.values(item).map((value, i) => (
+                                                        <td key={i}>{JSON.stringify(value)}</td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <p>No data available</p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Right Column - Unallocated Subjects */}
                         <div style={{
                             backgroundColor: 'lightblue',
-                            padding: '20px 20px 500px',
+                            padding: '20px',
                             borderRadius: '30px',
-                            flex: 1, // Allow this column to take up remaining space
+                            flex: 1,
                         }}>
                             <h3>Unallocated Subjects</h3>
-                            <button onClick={fetchData} disabled={loading}>
-                                {loading ? 'Loading...' : 'Fetch Data'}
+                            <button onClick={fetchUnallocatedData} disabled={loadingUnallocated}>
+                                {loadingUnallocated ? 'Loading...' : 'Fetch Data'}
                             </button>
 
-                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                            {errorUnallocated && <p style={{ color: 'red' }}>{errorUnallocated}</p>}
 
-                            {data.length > 0 ? (
+                            {unallocatedData.length > 0 ? (
                                 <table style={{ width: '100%' }}>
                                     <thead>
                                         <tr>
-                                            {Object.keys(data[0]).map((key) => (
+                                            {Object.keys(unallocatedData[0]).map((key) => (
                                                 <th key={key}>{key}</th>
                                             ))}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {data.map((item, index) => (
+                                        {unallocatedData.map((item, index) => (
                                             <tr key={index}>
                                                 {Object.values(item).map((value, i) => (
                                                     <td key={i}>{JSON.stringify(value)}</td>

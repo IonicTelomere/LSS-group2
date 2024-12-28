@@ -16,10 +16,10 @@ function LecturerNotification() {
     const fetchData = async () => {
         setLoading(true);
         setError(null);
-
+ 
         try {
             // Replace with your actual backend URL (adjust port if needed)
-            const response = await axios.post('http://localhost:3000/insert', {
+            const response = await axios.post('http://localhost:3000/lecturer', {
             });
 
             setData(response.data);  // Set the received data to state

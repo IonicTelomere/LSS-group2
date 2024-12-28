@@ -46,7 +46,7 @@ app.post('/insert', async (req, res) => {
     console.log("Received POST request to /insert");
     console.log("Request body:", req.body);
 
-    const query = 'SELECT * FROM LecturerSchedule';
+    const query = 'SELECT * FROM UpcomingUnallocatedSubjectInstances';
 
     try {
         const results = await queryDatabase(query);  // Await the promise
@@ -155,26 +155,60 @@ app.post('/api/register', async (req, res) => {
 
 
   app.post('/assign-subject', (req, res) => {
-    const { subjectId, lecturerId } = req.body;
+    const { subjectId, lecturerId } = req.body;  // Changed to subjectId
 
     if (!subjectId || !lecturerId) {
         return res.status(400).json({ error: 'subjectId and lecturerId are required' });
     }
 
-    // Call the stored procedure
-    const query = 'CALL AllocateLecturer(?, ?, @resultMessage); SELECT @resultMessage AS resultMessage;';
-    db.query(query, [subjectId, lecturerId], (err, results) => {
+    const query = 'CALL AllocateLecturer(?, ?); ';
+    
+    connection.query(query, [subjectId, lecturerId], (err, results) => {
         if (err) {
             console.error('Error calling procedure:', err);
             return res.status(500).json({ error: 'Database error' });
         }
 
-        // Extract the result message from the output
-        const resultMessage = results[1][0]?.resultMessage;
+        // Extract result message from the output
+        /*const resultMessage = results[1][0]?.resultMessage;
         if (resultMessage === 'This subject is already assigned') {
             return res.status(400).json({ error: resultMessage });
-        }
+        }*/
 
-        res.status(200).json({ message: resultMessage });
+        //res.status(200).json({ message: resultMessage });
     });
+});
+
+
+
+app.post('/displaysubject', async (req, res) => {
+    console.log("Received POST request to /insert");
+    console.log("Request body:", req.body);
+
+    const query = 'SELECT * FROM LecturerSubjectReference';
+
+    try {
+        const results = await queryDatabase(query);  // Await the promise
+        res.status(200).json(results);  // Send the query results as JSON
+    } catch (error) {
+        console.error('Detailed Error:', error);  // Log the error for debugging
+        // Send more detailed error message to the client
+        res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });
+    }
+});
+
+app.post('/lecturer', async (req, res) => {
+    console.log("Received POST request to /insert");
+    console.log("Request body:", req.body);
+
+    const query = 'SELECT * FROM LecturerSchedule';
+
+    try {
+        const results = await queryDatabase(query);  // Await the promise
+        res.status(200).json(results);  // Send the query results as JSON
+    } catch (error) {
+        console.error('Detailed Error:', error);  // Log the error for debugging
+        // Send more detailed error message to the client
+        res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });
+    }
 });
