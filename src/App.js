@@ -13,6 +13,8 @@ import ManagerPage from './components/home/ManagerPage';
 import ManagerSummary from './components/common/ManagerSummary';
 import LecturerProfile from "./components/home/LecturerProfile";
 import ManagerSchedule from "./components/home/ManagerSchedule";
+import EditLecturer from "./components/auth/EditInfo";
+import EditInfo from "./components/auth/EditInfo";
 
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
           <Route path="/managersummary" element={<ManagerSummary />} />
           <Route path="/lecturernotification" element={<LecturerNotification />} />
           <Route path="/managerschedule" element={<ManagerSchedule />} />
+          <Route path="/editlecturer" element={<EditInfo />} />
           <Route
             path="/admin"
             element={
@@ -77,6 +80,16 @@ function App() {
             element={
               <PrivateRoute requiredRoleID={20}>
                 <ManagerSchedule />
+              </PrivateRoute>
+              
+            }
+          />
+
+          <Route
+            path="/editlecturer"
+            element={
+              <PrivateRoute requiredRoleID={20}>
+                <EditInfo />
               </PrivateRoute>
               
             }

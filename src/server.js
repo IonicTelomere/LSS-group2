@@ -9,6 +9,7 @@ const path = require('path');
 // Initialize the express application
 const app = express();
 const PORT = 3000;
+const router = express.Router();
 
 app.use(express.static(path.join(__dirname, "build")));
 app.get("*", (req, res) => {
@@ -215,60 +216,33 @@ app.post('/lecturer', async (req, res) => {
 
 
 // Editing Lecturer Information
-app.post('/api/edit', async (req, res) => {
-    const { email, firstName, lastName, role, proficiency, preference, preference1, preference2, workload, password } = req.body;
-
-    // Validate required fields
-    if (!email || !firstName || !lastName || !role) {
-        return res.status(400).json({ message: 'Email, first name, last name, and role are required' });
-    }
-
-    try {
-        // If a password is provided, hash it
-        let hashedPassword = null;
-        if (password) {
-            hashedPassword = await bcrypt.hash(password, 10);
+  // API route to update lecturer info using stored procedure
+  app.get('/api/lecturers/:id', (req, res) => {
+    const { id } = req.params;
+  
+    // Query the view to retrieve lecturer data
+    const sql = 'SELECT * FROM LecturerView WHERE id = ?';
+  
+    connection.query(
+      sql,
+      [id],
+      (err, results) => {
+        if (err) {
+          console.error('Error retrieving lecturer data:', err);
+          return res.status(500).json({ message: 'Failed to retrieve lecturer data' });
         }
-
-        // Build the query and parameters
-        let query = 'CALL LecturerDetails(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        const queryParams = [
-            email, 
-            firstName, 
-            lastName, 
-            role, 
-            proficiency || null, 
-            preference || null, 
-            preference1 || null, 
-            preference2 || null, 
-            workload || null, 
-            hashedPassword || null
-        ];
-
-        // Execute the query
-        connection.query(query, queryParams, (err, result) => {
-            if (err) {
-                console.error('Database error:', err);
-                return res.status(500).json({ message: 'Database error' });
-            }
-            res.status(200).json({ message: 'User details updated successfully' });
-        });
-    } catch (err) {
-        console.error('Error:', err);
-        res.status(500).json({ message: 'Something went wrong' });
-    }
-});
-
-module.exports = router;
-
-
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-    }
-    console.log('Connected to MySQL database');
-});
+  
+        if (results.length === 0) {
+          return res.status(404).json({ message: 'Lecturer not found' });
+        }
+  
+        return res.status(200).json(results[0]);  // Return the first (and likely only) lecturer's data
+      }
+    );
+  });
+  
+  
+  
 
 // Route to add a subject
 app.post('/api/addsubject', (req, res) => {
