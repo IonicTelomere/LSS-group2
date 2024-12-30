@@ -153,17 +153,18 @@ app.post('/api/register', async (req, res) => {
     }
   });
 
-
+// Assign Subjects to Lecturers
   app.post('/assign-subject', (req, res) => {
-    const { subjectId, lecturerId } = req.body;
+    const { subjectInstanceID, lecturerID } = req.body;
 
-    if (!subjectId || !lecturerId) {
-        return res.status(400).json({ error: 'subjectId and lecturerId are required' });
+    // Validate inputs
+    if (!subjectInstanceID || !lecturerID) {
+        return res.status(400).json({ error: 'SubjectInstanceID and LecturerID are required' });
     }
 
     // Call the stored procedure
     const query = 'CALL AllocateLecturer(?, ?, @resultMessage); SELECT @resultMessage AS resultMessage;';
-    db.query(query, [subjectId, lecturerId], (err, results) => {
+    db.query(query, [subjectInstanceID, lecturerID], (err, results) => {
         if (err) {
             console.error('Error calling procedure:', err);
             return res.status(500).json({ error: 'Database error' });
@@ -176,5 +177,29 @@ app.post('/api/register', async (req, res) => {
         }
 
         res.status(200).json({ message: resultMessage });
+    });
+});
+
+
+// Route: Update Lecturer Availability
+app.post('/update-availability', (req, res) => {
+    const { lecturerId, dayOfWeek, availability } = req.body;
+
+    if (!lecturerId || !dayOfWeek || availability === undefined) {
+        return res.status(400).json({ error: 'lecturerId, dayOfWeek, and availability are required' });
+    }
+
+    const query = `
+        INSERT INTO lecturer_availability (lecturer_id, day_of_week, available)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE available = ?;
+    `;
+
+    db.query(query, [lecturerId, dayOfWeek, availability, availability], (err) => {
+        if (err) {
+            console.error('Error updating availability:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        res.status(200).json({ message: 'Availability updated successfully' });
     });
 });

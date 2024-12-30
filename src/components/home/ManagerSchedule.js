@@ -11,6 +11,8 @@ function ManagerSchedule() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [subjectInstanceID, setSubjectInstanceID] = useState('');
+    const [lecturerID, setLecturerID] = useState('');
 
     const fetchData = async () => {
         setLoading(true);
@@ -28,16 +30,18 @@ function ManagerSchedule() {
         }
     };
 
-    const assignSubject = async (subjectId, lecturerId) => {
+    const assignSubject = async () => {
         try {
             const response = await axios.post('http://localhost:3000/assign-subject', {
-                subjectId,
-                lecturerId,
+                subjectId: subjectInstanceID,
+                lecturerId: lecturerID,
             });
-    
+
             console.log(response.data.message);
+            alert(response.data.message); // Show success message
         } catch (error) {
             console.error(error.response?.data?.error || 'Error assigning subject');
+            alert(error.response?.data?.error || 'Error assigning subject'); // Show error message
         }
     };
 
@@ -76,7 +80,7 @@ function ManagerSchedule() {
 
                 {/* Middle Column - Form */}
                 <Col sm={5}>
-                <h1>Lecturer Assignment</h1>
+                    <h1>Lecturer Assignment</h1>
                     <div
                         style={{
                             backgroundColor: 'lightblue',
@@ -86,31 +90,33 @@ function ManagerSchedule() {
                         }}
                     >
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="subjectInput">Subject</Form.Label>
-                            <Form.Control id="subjectInput" placeholder="Subject" />
+                            <Form.Label htmlFor="subjectInstanceIDInput">Subject Instance ID</Form.Label>
+                            <Form.Control
+                                id="subjectInstanceIDInput"
+                                placeholder="Enter Subject Instance ID"
+                                value={subjectInstanceID}
+                                onChange={(e) => setSubjectInstanceID(e.target.value)}
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="lecturerInput">Lecturer</Form.Label>
-                            <Form.Control id="lecturerInput" placeholder="Lecturer" />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label htmlFor="startDateInput">Start Date</Form.Label>
-                            <Form.Control id="startDateInput" placeholder="Start Date" />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label htmlFor="endDateInput">End Date</Form.Label>
-                            <Form.Control id="endDateInput" placeholder="End Date" />
+                            <Form.Label htmlFor="lecturerIDInput">Lecturer ID</Form.Label>
+                            <Form.Control
+                                id="lecturerIDInput"
+                                placeholder="Enter Lecturer ID"
+                                value={lecturerID}
+                                onChange={(e) => setLecturerID(e.target.value)}
+                            />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
-                            Submit &gt;&gt;
+                        <Button variant="primary" onClick={assignSubject}>
+                            Assign Subject &gt;&gt;
                         </Button>
                     </div>
                 </Col>
 
                 {/* Right Column - Assigned Subjects */}
                 <Col sm={5}>
-                <h3>Assigned Subjects</h3>
+                    <h3>Assigned Subjects</h3>
                     <div
                         style={{
                             backgroundColor: 'lightblue',
@@ -119,7 +125,6 @@ function ManagerSchedule() {
                             textAlign: 'left',
                         }}
                     >
-                        
                         <button onClick={fetchData} disabled={loading}>
                             {loading ? 'Loading...' : 'Fetch Data'}
                         </button>
