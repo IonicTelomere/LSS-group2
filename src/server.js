@@ -215,44 +215,47 @@ app.post('/lecturer', async (req, res) => {
 
 
 // Editing Lecturer Information
-router.put('/api/users/:id/preferences', async (req, res) => {
-    const { id } = req.params;
-    const { newPreferences } = req.body;
+app.post('/api/edit', async (req, res) => {
+    const { email, firstName, lastName, role, proficiency, preference, preference1, preference2, workload, password } = req.body;
 
-    if (!Array.isArray(newPreferences) || newPreferences.length !== 3) {
-        return res.status(400).json({ message: 'Exactly 3 new preferences must be provided' });
+    // Validate required fields
+    if (!email || !firstName || !lastName || !role) {
+        return res.status(400).json({ message: 'Email, first name, last name, and role are required' });
     }
 
     try {
-        // Fetch existing preferences
-        const [rows] = await db.query('SELECT preferences FROM lecturers WHERE id = ?', [id]);
-
-        if (rows.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
+        // If a password is provided, hash it
+        let hashedPassword = null;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
         }
 
-        const existingPreferences = rows[0].preferences
-            ? JSON.parse(rows[0].preferences)
-            : [];
+        // Build the query and parameters
+        let query = 'CALL LecturerDetails(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const queryParams = [
+            email, 
+            firstName, 
+            lastName, 
+            role, 
+            proficiency || null, 
+            preference || null, 
+            preference1 || null, 
+            preference2 || null, 
+            workload || null, 
+            hashedPassword || null
+        ];
 
-        // Merge new preferences while avoiding duplicates
-        const updatedPreferences = Array.from(
-            new Set([...existingPreferences, ...newPreferences])
-        );
-
-        // Update preferences in the database
-        await connection.query('UPDATE lecturers SET preferences = ? WHERE id = ?', [
-            JSON.stringify(updatedPreferences),
-            id,
-        ]);
-
-        res.status(200).json({
-            message: 'Preferences added successfully',
-            preferences: updatedPreferences,
+        // Execute the query
+        connection.query(query, queryParams, (err, result) => {
+            if (err) {
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Database error' });
+            }
+            res.status(200).json({ message: 'User details updated successfully' });
         });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Internal server error' });
+        console.error('Error:', err);
+        res.status(500).json({ message: 'Something went wrong' });
     }
 });
 
