@@ -212,3 +212,76 @@ app.post('/lecturer', async (req, res) => {
         res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });
     }
 });
+
+
+// Editing Lecturer Information
+router.put('/api/users/:id/preferences', async (req, res) => {
+    const { id } = req.params;
+    const { newPreferences } = req.body;
+
+    if (!Array.isArray(newPreferences) || newPreferences.length !== 3) {
+        return res.status(400).json({ message: 'Exactly 3 new preferences must be provided' });
+    }
+
+    try {
+        // Fetch existing preferences
+        const [rows] = await db.query('SELECT preferences FROM lecturers WHERE id = ?', [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const existingPreferences = rows[0].preferences
+            ? JSON.parse(rows[0].preferences)
+            : [];
+
+        // Merge new preferences while avoiding duplicates
+        const updatedPreferences = Array.from(
+            new Set([...existingPreferences, ...newPreferences])
+        );
+
+        // Update preferences in the database
+        await connection.query('UPDATE lecturers SET preferences = ? WHERE id = ?', [
+            JSON.stringify(updatedPreferences),
+            id,
+        ]);
+
+        res.status(200).json({
+            message: 'Preferences added successfully',
+            preferences: updatedPreferences,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+module.exports = router;
+
+
+db.connect((err) => {
+    if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
+});
+
+// Route to add a subject
+app.post('/api/addsubject', (req, res) => {
+    const { subjectCode, subjectName } = req.body;
+
+    // Validate input
+    if (!subjectCode || !subjectName) {
+        return res.status(400).json({ error: 'Subject code and name are required.' });
+    }
+
+    const query = 'INSERT INTO Subjects (subjectCode, subjectName) VALUES (?, ?)';
+    connection.query(query, [subjectCode, subjectName], (err, result) => {
+        if (err) {
+            console.error('Error adding subject:', err);
+            return res.status(500).json({ error: 'Failed to add subject.' });
+        }
+        res.status(200).json({ message: 'Subject added successfully!' });
+    });
+});
