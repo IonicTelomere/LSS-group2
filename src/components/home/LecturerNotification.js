@@ -41,7 +41,7 @@ function LecturerNotification() {
             className="flex-column"
             style={{
               backgroundColor: 'lightblue',
-              padding: '20px 20px 610px',
+                padding: '20px 20px 20px',
               borderRadius: '30px',
               width: '250px'}}>
 

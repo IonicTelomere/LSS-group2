@@ -23,7 +23,7 @@ function LecturerProfile() {
                         className="flex-column"
                         style={{
                             backgroundColor: 'lightblue',
-                            padding: '20px 20px 610px',
+                            padding: '20px 20px 20px',
                             borderRadius: '30px',
                             width: '250px'
                         }}>
@@ -86,16 +86,6 @@ function LecturerProfile() {
                         </Stack>
                        
                         <p> </p>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Workload</Form.Label>
-                            <Form.Select>
-                                <option>1 Day Per Week</option>
-                                <option>2 Day Per Week</option>
-                                <option>3 Day Per Week</option>
-                                <option>4 Day Per Week</option>
-                                <option>5 Day Per Week</option>
-                            </Form.Select>
-                        </Form.Group>
                     </div>
                         
                 </div>
