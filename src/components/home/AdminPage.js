@@ -87,7 +87,7 @@ function AdminPage() {
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px 20px 500px',
+                                padding: '20px 20px 20px',
                                 borderRadius: '30px',
                                 marginRight: '20px',
                                 width: '250px', // Fixed width for consistent layout

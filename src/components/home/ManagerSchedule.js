@@ -79,7 +79,7 @@ function ManagerSchedule() {
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px 20px 500px',
+                                padding: '20px 20px 20px',
                                 borderRadius: '30px',
                                 width: '250px',
                                 marginRight: '20px',
@@ -112,8 +112,8 @@ function ManagerSchedule() {
                             backgroundColor: 'lightblue',
                             padding: '20px',
                             borderRadius: '30px',
-                            marginRight: '20px',
-                            width: '450px'
+                            marginBottom: '20px',
+                            width: '600px'
                         }}>
                             <Form onSubmit={assignSubject}>
                                 <Form.Group className="mb-3">
@@ -138,39 +138,70 @@ function ManagerSchedule() {
                                     Assign
                                 </Button>
                             </Form>
+                            </div>   
+                    </div>
 
-                            {/* Lecturer Specialisation Section */}
-                            <div style={{ marginTop: '20px' }}>
-                                <h3>Lecturer Specialisation</h3>
-                                <button onClick={fetchSpecialisationData} disabled={loadingSpecialisation}>
-                                    {loadingSpecialisation ? 'Loading...' : 'Fetch Data'}
-                                </button>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginTop: '20px'
+                    }}>
+                        {/* Lecturer Specialisation Section */}
+                        <div style={{
+                            backgroundColor: 'lightblue',
+                            padding: '20px',
+                            borderRadius: '30px',
+                            marginRight: '20px',
+                            flex: 1 // Allow it to grow and take available space
+                        }}>
+                            <h3>Lecturer Specialisation</h3>
+                            <button onClick={fetchSpecialisationData} disabled={loadingSpecialisation}>
+                                {loadingSpecialisation ? 'Loading...' : 'Fetch Data'}
+                            </button>
 
-                                {errorSpecialisation && <p style={{ color: 'red' }}>{errorSpecialisation}</p>}
+                            {errorSpecialisation && <p style={{ color: 'red' }}>{errorSpecialisation}</p>}
 
-                                {specialisationData.length > 0 ? (
-                                    <table style={{ width: '100%' }}>
-                                        <thead>
-                                            <tr>
-                                                {Object.keys(specialisationData[0]).map((key) => (
-                                                    <th key={key}>{key}</th>
+                            {specialisationData.length > 0 ? (
+                                <table style={{
+                                    width: '100%',
+                                    borderCollapse: 'collapse',
+                                    backgroundColor: 'white',
+                                }}>
+                                    <thead>
+                                        <tr>
+                                            {Object.keys(specialisationData[0]).map((key) => (
+                                                <th
+                                                    key={key}
+                                                    style={{
+                                                        border: '1px solid #ddd',
+                                                        padding: '8px',
+                                                        textAlign: 'left',
+                                                    }}>
+                                                    {key}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {specialisationData.map((item, index) => (
+                                            <tr key={index}>
+                                                {Object.values(item).map((value, i) => (
+                                                    <td
+                                                        key={i}
+                                                        style={{
+                                                            border: '1px solid #ddd',
+                                                            padding: '8px',
+                                                        }}>
+                                                        {JSON.stringify(value)}
+                                                    </td>
                                                 ))}
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {specialisationData.map((item, index) => (
-                                                <tr key={index}>
-                                                    {Object.values(item).map((value, i) => (
-                                                        <td key={i}>{JSON.stringify(value)}</td>
-                                                    ))}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                ) : (
-                                    <p>No data available</p>
-                                )}
-                            </div>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No data available</p>
+                            )}
                         </div>
 
                         {/* Right Column - Unallocated Subjects */}
@@ -178,7 +209,7 @@ function ManagerSchedule() {
                             backgroundColor: 'lightblue',
                             padding: '20px',
                             borderRadius: '30px',
-                            flex: 1,
+                            flex: 1, // Allow it to grow and take available space
                         }}>
                             <h3>Unallocated Subjects</h3>
                             <button onClick={fetchUnallocatedData} disabled={loadingUnallocated}>
@@ -188,11 +219,23 @@ function ManagerSchedule() {
                             {errorUnallocated && <p style={{ color: 'red' }}>{errorUnallocated}</p>}
 
                             {unallocatedData.length > 0 ? (
-                                <table style={{ width: '100%' }}>
+                                <table style={{
+                                    width: '100%',
+                                    borderCollapse: 'collapse',
+                                    backgroundColor: 'white',
+                                }}>
                                     <thead>
                                         <tr>
                                             {Object.keys(unallocatedData[0]).map((key) => (
-                                                <th key={key}>{key}</th>
+                                                <th
+                                                    key={key}
+                                                    style={{
+                                                        border: '1px solid #ddd',
+                                                        padding: '8px',
+                                                        textAlign: 'left',
+                                                    }}>
+                                                    {key}
+                                                </th>
                                             ))}
                                         </tr>
                                     </thead>
@@ -200,7 +243,13 @@ function ManagerSchedule() {
                                         {unallocatedData.map((item, index) => (
                                             <tr key={index}>
                                                 {Object.values(item).map((value, i) => (
-                                                    <td key={i}>{JSON.stringify(value)}</td>
+                                                    <td
+                                                        key={i}
+                                                        style={{
+                                                            border: '1px solid #ddd',
+                                                            padding: '8px',
+                                                        }}>
+                                                        {JSON.stringify(value)}</td>
                                                 ))}
                                             </tr>
                                         ))}

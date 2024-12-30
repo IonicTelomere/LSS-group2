@@ -44,7 +44,7 @@ function ManagerSummary() {
                             className="flex-column"
                             style={{
                                 backgroundColor: 'lightblue',
-                                padding: '20px 20px 500px',
+                                padding: '20px 20px 20px',
                                 borderRadius: '30px',
                                 marginRight: '20px',
                                 width: '250px', // Fixed width for consistent layout
@@ -74,11 +74,11 @@ function ManagerSummary() {
                         {/* Main Content */}
                         <div style={{
                             backgroundColor: 'lightblue',
-                            padding: '20px 20px 500px',
+                            padding: '20px 20px 20px',
                             borderRadius: '30px',
                             flex: 1, // Allow this div to take up remaining space
                         }}>
-                                <h3>Assigned Subjects</h3>
+                                <h3>Unassigned Subjects</h3>
                                 <button onClick={fetchData} disabled={loading}>
                                     {loading ? 'Loading...' : 'Fetch Data'}
                                 </button>
