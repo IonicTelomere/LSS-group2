@@ -1,77 +1,89 @@
 // Import required libraries
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const AddSubject = () => {
-    const [subjectCode, setSubjectCode] = useState('');
-    const [subjectName, setSubjectName] = useState('');
-    const [message, setMessage] = useState('');
+  // State variables to manage subject code, subject name, and message
+  const [subjectCode, setSubjectCode] = useState(""); 
+  const [subjectName, setSubjectName] = useState("");
+  const [message, setMessage] = useState("");
 
-    // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
 
-        if (!subjectCode || !subjectName) {
-            setMessage('Both Subject Code and Subject Name are required.');
-            return;
+    // Check if both subject code and subject name are provided
+    if (!subjectCode || !subjectName) {
+      setMessage("Both Subject Code and Subject Name are required.");
+      return; // Stop execution if fields are empty
+    }
+
+    try {
+      // Send POST request to the backend API with subject data
+      const response = await axios.post(
+        "http://localhost:5000/api/addsubject",
+        {
+          subjectCode, // Pass subject code to the server
+          subjectName, // Pass subject name to the server
         }
+      );
 
-        try {
-            // Post data to the API
-            const response = await axios.post('http://localhost:5000/api/addsubject', {
-                subjectCode,
-                subjectName,
-            });
+      // Check if the request was successful (status code 200)
+      if (response.status === 200) {
+        setMessage("Subject added successfully!"); // Success message
+        setSubjectCode(""); // Clear the input field for subject code
+        setSubjectName(""); // Clear the input field for subject name
+      } else {
+        setMessage("Failed to add subject."); // Error message if response status is not 200
+      }
+    } catch (error) {
+      // Catch any errors that occur during the request
+      setMessage(`Error: ${error.message}`); // Display the error message
+    }
+  };
 
-            if (response.status === 200) {
-                setMessage('Subject added successfully!');
-                setSubjectCode(''); // Clear input fields
-                setSubjectName('');
-            } else {
-                setMessage('Failed to add subject.');
-            }
-        } catch (error) {
-            setMessage(`Error: ${error.message}`);
-        }
-    };
+  return (
+    <div style={{ margin: "20px" }}>
+      <h2>Add a New Subject</h2>
 
-    return (
-        <div style={{ margin: '20px' }}>
-            <h2>Add a New Subject</h2>
-
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>
-                        Subject Code:
-                        <input
-                            type="text"
-                            value={subjectCode}
-                            onChange={(e) => setSubjectCode(e.target.value)}
-                            placeholder="Enter Subject Code"
-                            required
-                        />
-                    </label>
-                </div>
-
-                <div style={{ marginBottom: '10px' }}>
-                    <label>
-                        Subject Name:
-                        <input
-                            type="text"
-                            value={subjectName}
-                            onChange={(e) => setSubjectName(e.target.value)}
-                            placeholder="Enter Subject Name"
-                            required
-                        />
-                    </label>
-                </div>
-
-                <button type="submit">Add Subject</button>
-            </form>
-
-            {message && <p style={{ color: 'blue', marginTop: '20px' }}>{message}</p>}
+      {/* Form to input subject details */}
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "10px" }}>
+          <label>
+            Subject Code:
+            {/* Input field for subject code */}
+            <input
+              type="text"
+              value={subjectCode} // Bind input value to state
+              onChange={(e) => setSubjectCode(e.target.value)} // Update state on change
+              placeholder="Enter Subject Code"
+              required // Makes this field required
+            />
+          </label>
         </div>
-    );
+
+        <div style={{ marginBottom: "10px" }}>
+          <label>
+            Subject Name:
+            {/* Input field for subject name */}
+            <input
+              type="text"
+              value={subjectName} // Bind input value to state
+              onChange={(e) => setSubjectName(e.target.value)} // Update state on change
+              placeholder="Enter Subject Name"
+              required // Makes this field required
+            />
+          </label>
+        </div>
+
+        {/* Button to submit the form */}
+        <button type="submit">Add Subject</button>
+      </form>
+
+      {/* Display success or error message */}
+      {message && <p style={{ color: "blue", marginTop: "20px" }}>{message}</p>}
+    </div>
+  );
 };
 
 export default AddSubject;

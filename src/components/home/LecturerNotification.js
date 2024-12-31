@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
@@ -9,64 +9,79 @@ import axios from 'axios';
 import LogoutButton from '../auth/Logout';
 
 function LecturerNotification() {
+  // State hooks for storing data, loading state, and error state
   const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
- 
-        try {
-            // Replace with your actual backend URL (adjust port if needed)
-            const response = await axios.post('http://localhost:3000/lecturer', {
-            });
+  // Function to fetch data from the backend
+  const fetchData = async () => {
+    setLoading(true);  // Set loading state to true before fetching
+    setError(null);  // Reset error state
 
-            setData(response.data);  // Set the received data to state
-        } catch (err) {
-            setError('Error fetching data from the backend');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      // Make a POST request to the backend API (localhost)
+      const response = await axios.post('http://localhost:3000/lecturer');
+      setData(response.data);  // Set the received data to the state
+    } catch (err) {
+      setError('Error fetching data from the backend');  // Handle any errors during data fetching
+      console.error(err);  // Log the error for debugging purposes
+    } finally {
+      setLoading(false);  // Set loading state to false after fetching is complete
+    }
+  };
 
   return (
     <Container>
       <Row>
+        {/* Main title for the page */}
         <h1>Notifications & Calendar</h1>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
+          
+          {/* Navigation Menu */}
           <Nav
             defaultActiveKey="/home"
             className="flex-column"
             style={{
               backgroundColor: 'lightblue',
-                padding: '20px 20px 20px',
+              padding: '20px 20px 20px',
               borderRadius: '30px',
-              width: '250px'}}>
-
-            <Nav.Link href="/lecturerprofile"
-                      style={{
-                      padding: '10px',
-                      borderRadius: '5px',
-                      backgroundColor: 'white',
-                      color: 'black',
-                      textAlign: 'center',
-                      marginBottom: '10px'
-                          }}>Your Profile</Nav.Link>
+              width: '250px'
+            }}
+          >
+            {/* Link to Lecturer Profile */}
+            <Nav.Link
+              href="/lecturerprofile"
+              style={{
+                padding: '10px',
+                borderRadius: '5px',
+                backgroundColor: 'white',
+                color: 'black',
+                textAlign: 'center',
+                marginBottom: '10px'
+              }}
+            >
+              Your Profile
+            </Nav.Link>
+            {/* Logout Button */}
             <LogoutButton />
           </Nav>
 
+          {/* Main Content Area */}
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '20px' }}>
-            <div style={{
+            {/* Notification Section */}
+            <div
+              style={{
                 backgroundColor: 'lightblue',
                 padding: '20px 20px 40px',
                 borderRadius: '30px',
-                textAlign: 'center', }}>
-                <h3 style={{ textAlign: 'left', }}>Notifications</h3>
-                <ToastContainer
-                className="position-static"
-                style={{ display: 'flex', gap: '10px', flexWrap: 'nowrap' }}>
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ textAlign: 'left' }}>Notifications</h3>
+              {/* Toast Container for displaying notifications */}
+              <ToastContainer className="position-static" style={{ display: 'flex', gap: '10px', flexWrap: 'nowrap' }}>
+                {/* Single Toast notification */}
                 <Toast>
                   <Toast.Header>
                     <strong className="me-auto">Urgent</strong>
@@ -77,7 +92,7 @@ function LecturerNotification() {
               </ToastContainer>
             </div>
 
-            {/* Table for Assigned Subjects */}
+            {/* Assigned Subjects Section */}
             <div
               style={{
                 backgroundColor: 'lightblue',
@@ -86,36 +101,41 @@ function LecturerNotification() {
               }}
             >
               <h3>Assigned Subjects</h3>
+              {/* Button to trigger data fetching */}
               <button onClick={fetchData} disabled={loading}>
                 {loading ? 'Loading...' : 'Fetch Data'}
-            </button>
+              </button>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+              {/* Display error message if there was an error fetching data */}
+              {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            {data.length > 0 ? (
-                <table>
-                    <thead>
-                        <tr>
-                            {/* Adjust the headers based on your data structure */}
-                            {Object.keys(data[0]).map((key) => (
-                                <th key={key}>{key}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((item, index) => (
-                            <tr key={index}>
-                                {Object.values(item).map((value, i) => (
-                                    <td key={i}>{JSON.stringify(value)}</td>
-                                ))}
-                            </tr>
+              {/* Display the data in a table if available */}
+              {data.length > 0 ? (
+                <Table responsive striped bordered hover>
+                  <thead>
+                    <tr>
+                      {/* Dynamically create table headers based on data object keys */}
+                      {Object.keys(data[0]).map((key) => (
+                        <th key={key}>{key}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Map over the data and display each row */}
+                    {data.map((item, index) => (
+                      <tr key={index}>
+                        {/* Map over each item’s values and display them in table cells */}
+                        {Object.values(item).map((value, i) => (
+                          <td key={i}>{JSON.stringify(value)}</td>
                         ))}
-                    </tbody>
-                </table>
-            ) : (
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                // If no data, display a message
                 <p>No data available</p>
-            )}
-
+              )}
             </div>
           </div>
         </div>

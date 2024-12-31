@@ -131,7 +131,7 @@ app.get("/api/courses", (req, res) => {
 
 // Registration API endpoint
 app.post('/api/register', async (req, res) => {
-    const { firstName, lastName, role, proficiency, preference, preference1, preference2, workload, email, password } = req.body;
+    const { firstName, lastName, role, preference, preference1, preference2, workload, email, password } = req.body;
   
     if (!email || !password || !role || !firstName || !lastName) {
       return res.status(400).json({ message: 'All required fields must be filled' });
@@ -169,14 +169,6 @@ app.post('/api/register', async (req, res) => {
             console.error('Error calling procedure:', err);
             return res.status(500).json({ error: 'Database error' });
         }
-
-        // Extract result message from the output
-        /*const resultMessage = results[1][0]?.resultMessage;
-        if (resultMessage === 'This subject is already assigned') {
-            return res.status(400).json({ error: resultMessage });
-        }*/
-
-        //res.status(200).json({ message: resultMessage });
     });
 });
 
@@ -219,9 +211,12 @@ app.post('/lecturer', async (req, res) => {
   // API route to update lecturer info using stored procedure
   app.get('/api/lecturers/:id', (req, res) => {
     const { id } = req.params;
+
+    // Log the ID for debugging
+    console.log(`Fetching lecturer data for ID: ${id}`);
   
     // Query the view to retrieve lecturer data
-    const sql = 'SELECT * FROM LecturerView WHERE id = ?';
+    const sql = 'SELECT * FROM LecturerView WHERE LecturerID = ?';
   
     connection.query(
       sql,
@@ -236,10 +231,11 @@ app.post('/lecturer', async (req, res) => {
           return res.status(404).json({ message: 'Lecturer not found' });
         }
   
-        return res.status(200).json(results[0]);  // Return the first (and likely only) lecturer's data
+        // Return the first (and likely only) lecturer's data
+        return res.status(200).json(results[0]);
       }
     );
-  });
+});
   
   
   
@@ -248,12 +244,11 @@ app.post('/lecturer', async (req, res) => {
 app.post('/api/addsubject', (req, res) => {
     const { subjectCode, subjectName } = req.body;
 
-    // Validate input
     if (!subjectCode || !subjectName) {
         return res.status(400).json({ error: 'Subject code and name are required.' });
     }
 
-    const query = 'INSERT INTO Subjects (subjectCode, subjectName) VALUES (?, ?)';
+    const query = 'CALL Add_Subject(?, ?)';
     connection.query(query, [subjectCode, subjectName], (err, result) => {
         if (err) {
             console.error('Error adding subject:', err);
