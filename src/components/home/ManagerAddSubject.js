@@ -1,4 +1,3 @@
-// Import required libraries
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -6,7 +5,8 @@ const AddSubject = () => {
   // State variables to manage subject code, subject name, and message
   const [subjectCode, setSubjectCode] = useState(""); 
   const [subjectName, setSubjectName] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); // Stores message content
+  const [messageType, setMessageType] = useState(""); // Stores message type (success or error)
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -15,6 +15,7 @@ const AddSubject = () => {
     // Check if both subject code and subject name are provided
     if (!subjectCode || !subjectName) {
       setMessage("Both Subject Code and Subject Name are required.");
+      setMessageType("error"); // Set message type to error
       return; // Stop execution if fields are empty
     }
 
@@ -31,15 +32,25 @@ const AddSubject = () => {
       // Check if the request was successful (status code 200)
       if (response.status === 200) {
         setMessage("Subject added successfully!"); // Success message
+        setMessageType("success"); // Set message type to success
         setSubjectCode(""); // Clear the input field for subject code
         setSubjectName(""); // Clear the input field for subject name
       } else {
         setMessage("Failed to add subject."); // Error message if response status is not 200
+        setMessageType("error"); // Set message type to error
       }
     } catch (error) {
       // Catch any errors that occur during the request
       setMessage(`Error: ${error.message}`); // Display the error message
+      setMessageType("error"); // Set message type to error
     }
+  };
+
+  // Dynamic styling based on message type
+  const messageStyle = {
+    color: messageType === "success" ? "green" : "red", // Green for success, red for error
+    marginTop: "20px",
+    fontWeight: "bold",
   };
 
   return (
@@ -81,7 +92,7 @@ const AddSubject = () => {
       </form>
 
       {/* Display success or error message */}
-      {message && <p style={{ color: "blue", marginTop: "20px" }}>{message}</p>}
+      {message && <p style={messageStyle}>{message}</p>}
     </div>
   );
 };
