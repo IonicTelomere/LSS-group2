@@ -209,18 +209,18 @@ app.post('/lecturer', async (req, res) => {
 
 // Editing Lecturer Information
   // API route to update lecturer info using stored procedure
-  app.get('/api/lecturers/:id', (req, res) => {
-    const { id } = req.params;
+  app.put('/api/lecturers/:id', (req, res) => {
+    const lecturerId = req.params.id;
 
     // Log the ID for debugging
-    console.log(`Fetching lecturer data for ID: ${id}`);
+    console.log(`Fetching lecturer data for ID: ${lecturerId}`);
   
     // Query the view to retrieve lecturer data
-    const sql = 'SELECT * FROM LecturerView WHERE LecturerID = ?';
+    const sql = 'SELECT * FROM LecturerDetails WHERE UserID = ?';
   
     connection.query(
       sql,
-      [id],
+      [lecturerId],
       (err, results) => {
         if (err) {
           console.error('Error retrieving lecturer data:', err);
