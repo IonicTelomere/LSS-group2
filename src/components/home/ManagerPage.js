@@ -7,20 +7,20 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import LogoutButton from '../auth/Logout';
+import logo from "../Img/LSS.png";
 
 function ManagerPage() {
-
     // State hooks to manage the form, fetched data, and messages
     const [subjectcode, setsubjectcode] = useState('');
     const [subjectname, setsubjectname] = useState('');
     const [startdate, setstartdate] = useState('');
     const [noofenrolments, setnoofenrolments] = useState('');
     const [subjectcodeInstance, setsubjectcodeInstance] = useState('');
-    
+
     // Separate success and error messages for each form
-    const [subjectSuccessMessage, setSubjectSuccessMessage] = useState(''); 
+    const [subjectSuccessMessage, setSubjectSuccessMessage] = useState('');
     const [subjectErrorMessage, setSubjectErrorMessage] = useState('');
-    const [instanceSuccessMessage, setInstanceSuccessMessage] = useState(''); 
+    const [instanceSuccessMessage, setInstanceSuccessMessage] = useState('');
     const [instanceErrorMessage, setInstanceErrorMessage] = useState('');
 
     // Adding subject when form is submitted
@@ -35,13 +35,13 @@ function ManagerPage() {
                 subjectcode,
                 subjectname,
             });
-            setSubjectSuccessMessage(response.data.message); // Set success message
+            setSubjectSuccessMessage(response.data.message);
             setsubjectcode('');
             setsubjectname('');
-            setSubjectErrorMessage(''); // Clear error message
+            setSubjectErrorMessage('');
         } catch (error) {
             setSubjectErrorMessage(error.response?.data?.error || 'Error adding subject');
-            setSubjectSuccessMessage(''); // Clear success message
+            setSubjectSuccessMessage('');
         }
     };
 
@@ -58,14 +58,14 @@ function ManagerPage() {
                 startdate,
                 noofenrolments,
             });
-            setInstanceSuccessMessage(response.data.message); // Set success message
+            setInstanceSuccessMessage(response.data.message);
             setsubjectcodeInstance('');
             setstartdate('');
             setnoofenrolments('');
-            setInstanceErrorMessage(''); // Clear error message
+            setInstanceErrorMessage('');
         } catch (error) {
             setInstanceErrorMessage(error.response?.data?.error || 'Error adding subject instance');
-            setInstanceSuccessMessage(''); // Clear success message
+            setInstanceSuccessMessage('');
         }
     };
 
@@ -73,14 +73,27 @@ function ManagerPage() {
         <Container>
             <Row>
                 <Col>
-                    <h1>Manager Home</h1>
+                    {/* Logo section */}
+                    <div className="text-center mb-4" style={{ marginBottom: '30px' }}>
+                        <img
+                            src={logo}
+                            alt="LSS Logo"
+                            style={{
+                                width: "250px", // Adjust width as necessary
+                                height: "auto",
+                                padding: '20px 0px 0px 0px',
+                                borderRadius: "10px", // Rounded logo
+                            }}
+                        />
+                    </div>
+                    <h1 style={{ textAlign: 'left', color: '#064789' }}>Manager Home</h1>
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                         <Nav
                             defaultActiveKey="/home"
                             className="flex-column"
                             style={{
-                                backgroundColor: 'lightblue',
-                                padding: '20px 20px 20px',
+                                backgroundColor: '#EBF2FA', // Light Background Color
+                                padding: '20px',
                                 borderRadius: '30px',
                                 marginRight: '20px',
                                 width: '250px',
@@ -89,9 +102,9 @@ function ManagerPage() {
                             <Nav.Link href="/managersummary" style={{
                                 padding: '10px',
                                 borderRadius: '5px',
-                                color: 'black',
+                                color: 'white', // Text color for contrast
                                 textAlign: 'center',
-                                backgroundColor: 'white',
+                                backgroundColor: '#427AA1', // Button background color
                                 marginBottom: '10px',
                             }}>
                                 Subject Summary
@@ -99,9 +112,9 @@ function ManagerPage() {
                             <Nav.Link href="/managerschedule" style={{
                                 padding: '10px',
                                 borderRadius: '5px',
-                                color: 'black',
+                                color: 'white', // Text color for contrast
                                 textAlign: 'center',
-                                backgroundColor: 'white',
+                                backgroundColor: '#427AA1', // Button background color
                                 marginBottom: '10px',
                             }}>
                                 Lecturer Assignment
@@ -110,13 +123,13 @@ function ManagerPage() {
                         </Nav>
 
                         <div style={{
-                            backgroundColor: 'lightblue',
+                            backgroundColor: '#EBF2FA', // Light Background Color
                             padding: '20px',
                             borderRadius: '30px',
                             marginRight: '20px',
                             width: '400px'
                         }}>
-                            <h3>Add Subject</h3>
+                            <h3 style={{ color: '#064789' }}>Add Subject</h3>
                             {subjectSuccessMessage && <div className="alert alert-success">{subjectSuccessMessage}</div>}
                             {subjectErrorMessage && <div className="alert alert-danger">{subjectErrorMessage}</div>}
                             <Form onSubmit={addSubject}>
@@ -128,6 +141,9 @@ function ManagerPage() {
                                         value={subjectcode}
                                         onChange={(e) => setsubjectcode(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter a 7 digit unique code for the subject. Example CSE1OSX.
+                                    </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="subjectnameInput">Subject Name</Form.Label>
@@ -137,18 +153,21 @@ function ManagerPage() {
                                         value={subjectname}
                                         onChange={(e) => setsubjectname(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter the full name of the subject. Example Computer Science.
+                                    </Form.Text>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">Assign</Button>
+                                <Button variant="primary" type="submit" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>Add</Button>
                             </Form>
                         </div>
 
                         <div style={{
-                            backgroundColor: 'lightblue',
+                            backgroundColor: '#EBF2FA', // Light Background Color
                             padding: '20px',
                             borderRadius: '30px',
                             width: '400px'
                         }}>
-                            <h3>Add Subject Instance</h3>
+                            <h3 style={{ color: '#064789' }}>Add Subject Instance</h3>
                             {instanceSuccessMessage && <div className="alert alert-success">{instanceSuccessMessage}</div>}
                             {instanceErrorMessage && <div className="alert alert-danger">{instanceErrorMessage}</div>}
                             <Form onSubmit={addSubjectInstance}>
@@ -160,26 +179,37 @@ function ManagerPage() {
                                         value={subjectcodeInstance}
                                         onChange={(e) => setsubjectcodeInstance(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter the subject code that corresponds to the instance. Example CSE1ABC.
+                                    </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="startdateInput">Start Date</Form.Label>
                                     <Form.Control
                                         id="startdateInput"
+                                        type="date"
                                         placeholder="Enter Subject Start Date"
                                         value={startdate}
                                         onChange={(e) => setstartdate(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter the start date for the subject instance.
+                                    </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="noofenrolmentsInput">No of Enrolments</Form.Label>
                                     <Form.Control
                                         id="noofenrolmentsInput"
+                                        type="number"
                                         placeholder="Enter No of Enrolments"
                                         value={noofenrolments}
                                         onChange={(e) => setnoofenrolments(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter the maximum number of enrollments for this subject instance.
+                                    </Form.Text>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">Assign</Button>
+                                <Button variant="primary" type="submit" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>Add</Button>
                             </Form>
                         </div>
                     </div>

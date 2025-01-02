@@ -20,7 +20,6 @@ import ManagerSummary from "./components/common/ManagerSummary";
 import LecturerProfile from "./components/home/LecturerProfile";
 import ManagerSchedule from "./components/home/ManagerSchedule";
 import EditInfo from "./components/auth/EditInfo";
-import ManagerAddSubject from "./components/home/ManagerAddSubject";
 
 function App() {
   const { user } = useUser(); // Accessing user information from context
@@ -51,8 +50,6 @@ function App() {
         {/* Route for the manager schedule page */}
         <Route path="/editlecturer" element={<EditInfo />} />{" "}
         {/* Route for editing lecturer information */}
-        <Route path="/manageraddsubject" element={<ManagerAddSubject />} />{" "}
-        {/* Route for adding subjects by the manager */}
         {/* Protected routes using PrivateRoute component for role-based access */}
         <Route
           path="/admin"
@@ -117,15 +114,6 @@ function App() {
           }
         />{" "}
         {/* Edit Lecturer route, only accessible by users with role ID 20 */}
-        <Route
-          path="/manageraddsubject"
-          element={
-            <PrivateRoute requiredRoleID={20}>
-              <ManagerAddSubject />
-            </PrivateRoute>
-          }
-        />{" "}
-        {/* Manager Add Subject route, only accessible by users with role ID 20 */}
         <Route path="*" element={<Navigate to="/" />} />{" "}
         {/* Catch-all route for unknown paths, redirects to login page */}
       </Routes>

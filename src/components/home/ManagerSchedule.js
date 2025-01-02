@@ -7,17 +7,18 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Nav from 'react-bootstrap/Nav';
 import LogoutButton from '../auth/Logout';
+import logo from "../Img/LSS.png";
 
 function ManagerSchedule() {
     // State hooks to manage the form and fetched data
     const [subjectId, setSubjectId] = useState('');
     const [lecturerId, setLecturerId] = useState('');
-    const [specialisationData, setSpecialisationData] = useState([]); // Stores lecturer specialisation data
-    const [unallocatedData, setUnallocatedData] = useState([]); // Stores unallocated subjects data
-    const [loadingSpecialisation, setLoadingSpecialisation] = useState(false); // Loading state for specialisation data
-    const [loadingUnallocated, setLoadingUnallocated] = useState(false); // Loading state for unallocated subjects
-    const [errorSpecialisation, setErrorSpecialisation] = useState(null); // Error state for specialisation data fetch
-    const [errorUnallocated, setErrorUnallocated] = useState(null); // Error state for unallocated subjects fetch
+    const [specialisationData, setSpecialisationData] = useState([]);
+    const [unallocatedData, setUnallocatedData] = useState([]);
+    const [loadingSpecialisation, setLoadingSpecialisation] = useState(false);
+    const [loadingUnallocated, setLoadingUnallocated] = useState(false);
+    const [errorSpecialisation, setErrorSpecialisation] = useState(null);
+    const [errorUnallocated, setErrorUnallocated] = useState(null);
 
     // Fetch unallocated subjects data from the backend
     const fetchUnallocatedData = async () => {
@@ -54,20 +55,18 @@ function ManagerSchedule() {
     // Assign subject to lecturer when form is submitted
     const assignSubject = async (e) => {
         e.preventDefault();
-        // Ensure both subjectId and lecturerId are provided before proceeding
         if (!subjectId || !lecturerId) {
             console.error("subjectId and lecturerId are required");
             return;
         }
         try {
-            // Send the data to the backend to assign subject to lecturer
             const response = await axios.post('http://localhost:3000/assign-subject', {
                 subjectId,
                 lecturerId,
             });
             console.log(response.data.message);
-            setSubjectId(''); // Clear subject ID input after assignment
-            setLecturerId(''); // Clear lecturer ID input after assignment
+            setSubjectId('');
+            setLecturerId('');
         } catch (error) {
             console.error(error.response?.data?.error || 'Error assigning subject');
         }
@@ -77,27 +76,38 @@ function ManagerSchedule() {
         <Container>
             <Row>
                 <Col>
-                    <h1 style={{ textAlign: 'left' }}>Lecturer Assignment</h1>
+                    {/* Logo section */}
+                    <div className="text-center mb-4" style={{ marginBottom: '30px' }}>
+                        <img
+                            src={logo}
+                            alt="LSS Logo"
+                            style={{
+                                width: "250px", // Adjust width as necessary
+                                height: "auto",
+                                padding: '20px 0px 0px 0px',
+                                borderRadius: "10px", // Rounded logo
+                            }}
+                        />
+                    </div>
+                    <h1 style={{ textAlign: 'left', color: '#064789' }}>Lecturer Assignment</h1>
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                        {/* Left Column - Navigation Menu */}
                         <Nav
                             defaultActiveKey="/home"
                             className="flex-column"
                             style={{
-                                backgroundColor: 'lightblue', // Background color for navigation
-                                padding: '20px', // Padding for the sidebar
-                                borderRadius: '30px', // Rounded corners for the sidebar
-                                width: '250px', // Fixed width for the sidebar
-                                marginRight: '20px', // Margin on the right to create space between sidebar and content
+                                backgroundColor: '#EBF2FA', // Light Background
+                                padding: '20px',
+                                borderRadius: '30px',
+                                width: '250px',
+                                marginRight: '20px',
                             }}>
-                            {/* Navigation Links */}
                             <Nav.Link
                                 href="/manager"
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
-                                    backgroundColor: 'white',
-                                    color: 'black',
+                                    backgroundColor: '#427AA1', // Button background color
+                                    color: 'white', // Text color for contrast
                                     textAlign: 'center',
                                     marginBottom: '10px',
                                 }}>Manager Home</Nav.Link>
@@ -106,18 +116,16 @@ function ManagerSchedule() {
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
-                                    backgroundColor: 'white',
-                                    color: 'black',
+                                    backgroundColor: '#427AA1', // Button background color
+                                    color: 'white', // Text color for contrast
                                     textAlign: 'center',
                                     marginBottom: '10px',
                                 }}>Subject Summary</Nav.Link>
-                            {/* Logout Button */}
                             <LogoutButton />
                         </Nav>
 
-                        {/* Middle - Form to Assign Subject to Lecturer */}
                         <div style={{
-                            backgroundColor: 'lightblue',
+                            backgroundColor: '#EBF2FA', // Light Background
                             padding: '20px',
                             borderRadius: '30px',
                             marginBottom: '20px',
@@ -130,8 +138,12 @@ function ManagerSchedule() {
                                         id="subjectIdInput"
                                         placeholder="Enter Subject ID"
                                         value={subjectId}
-                                        onChange={(e) => setSubjectId(e.target.value)} // Update subjectId state
+                                        onChange={(e) => setSubjectId(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter a 7 digit unique identifier for the subject you wish to assign.
+                                        Example: CSE1XXX
+                                    </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="lecturerIdInput">Lecturer ID</Form.Label>
@@ -139,37 +151,36 @@ function ManagerSchedule() {
                                         id="lecturerIdInput"
                                         placeholder="Enter Lecturer ID"
                                         value={lecturerId}
-                                        onChange={(e) => setLecturerId(e.target.value)} // Update lecturerId state
+                                        onChange={(e) => setLecturerId(e.target.value)}
                                     />
+                                    <Form.Text className="text-muted">
+                                        Please enter the unique identifier for the lecturer you wish to assign to the subject. Check Lecturer specialisation for Lecturer ID
+                                    </Form.Text>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">Assign</Button>
+                                <Button variant="primary" type="submit" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>
+                                    Assign
+                                </Button>
                             </Form>
-                        </div>   
+                        </div>
                     </div>
 
-                    {/* Bottom Section - Data Fetch Buttons */}
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         marginTop: '20px'
                     }}>
-                        {/* Lecturer Specialisation Section */}
                         <div style={{
-                            backgroundColor: 'lightblue',
+                            backgroundColor: '#EBF2FA', // Light Background
                             padding: '20px',
                             borderRadius: '30px',
                             marginRight: '20px',
-                            flex: 1 // Allow this section to grow and take up remaining space
+                            flex: 1
                         }}>
-                            <h3>Lecturer Specialisation</h3>
-                            <button onClick={fetchSpecialisationData} disabled={loadingSpecialisation}>
+                            <h3 style={{ color: '#064789' }}>Lecturer Specialisation</h3>
+                            <button onClick={fetchSpecialisationData} disabled={loadingSpecialisation} style={{ backgroundColor: '#427AA1', color: 'white', border: 'none', padding: '10px 15px', borderRadius: '5px' }}>
                                 {loadingSpecialisation ? 'Loading...' : 'Fetch Data'}
                             </button>
-
-                            {/* Display error if fetching specialisation data fails */}
                             {errorSpecialisation && <p style={{ color: 'red' }}>{errorSpecialisation}</p>}
-
-                            {/* Display lecturer specialisation data in a table if available */}
                             {specialisationData.length > 0 ? (
                                 <table style={{
                                     width: '100%',
@@ -178,31 +189,25 @@ function ManagerSchedule() {
                                 }}>
                                     <thead>
                                         <tr>
-                                            {/* Dynamically create table headers from the keys of the first data object */}
                                             {Object.keys(specialisationData[0]).map((key) => (
-                                                <th
-                                                    key={key}
-                                                    style={{
-                                                        border: '1px solid #ddd',
-                                                        padding: '8px',
-                                                        textAlign: 'left',
-                                                    }}>
+                                                <th key={key} style={{
+                                                    border: '1px solid #ddd',
+                                                    padding: '8px',
+                                                    textAlign: 'left',
+                                                }}>
                                                     {key}
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* Dynamically create rows for each data item */}
                                         {specialisationData.map((item, index) => (
                                             <tr key={index}>
                                                 {Object.values(item).map((value, i) => (
-                                                    <td
-                                                        key={i}
-                                                        style={{
-                                                            border: '1px solid #ddd',
-                                                            padding: '8px',
-                                                        }}>
+                                                    <td key={i} style={{
+                                                        border: '1px solid #ddd',
+                                                        padding: '8px',
+                                                    }}>
                                                         {JSON.stringify(value)}
                                                     </td>
                                                 ))}
@@ -211,26 +216,21 @@ function ManagerSchedule() {
                                     </tbody>
                                 </table>
                             ) : (
-                                <p>No data available</p> // Display if no specialisation data
+                                <p>No data available</p>
                             )}
                         </div>
 
-                        {/* Right Column - Unallocated Subjects Section */}
                         <div style={{
-                            backgroundColor: 'lightblue',
+                            backgroundColor: '#EBF2FA', // Light Background
                             padding: '20px',
                             borderRadius: '30px',
-                            flex: 1, // Allow this section to grow and take up remaining space
+                            flex: 1,
                         }}>
-                            <h3>Unallocated Subjects</h3>
-                            <button onClick={fetchUnallocatedData} disabled={loadingUnallocated}>
+                            <h3 style={{ color: '#064789' }}>Unallocated Subjects</h3>
+                            <button onClick={fetchUnallocatedData} disabled={loadingUnallocated} style={{ backgroundColor: '#427AA1', color: 'white', border: 'none', padding: '10px 15px', borderRadius: '5px' }}>
                                 {loadingUnallocated ? 'Loading...' : 'Fetch Data'}
                             </button>
-
-                            {/* Display error if fetching unallocated subjects fails */}
                             {errorUnallocated && <p style={{ color: 'red' }}>{errorUnallocated}</p>}
-
-                            {/* Display unallocated subjects data in a table if available */}
                             {unallocatedData.length > 0 ? (
                                 <table style={{
                                     width: '100%',
@@ -239,39 +239,34 @@ function ManagerSchedule() {
                                 }}>
                                     <thead>
                                         <tr>
-                                            {/* Dynamically create table headers from the keys of the first data object */}
                                             {Object.keys(unallocatedData[0]).map((key) => (
-                                                <th
-                                                    key={key}
-                                                    style={{
-                                                        border: '1px solid #ddd',
-                                                        padding: '8px',
-                                                        textAlign: 'left',
-                                                    }}>
+                                                <th key={key} style={{
+                                                    border: '1px solid #ddd',
+                                                    padding: '8px',
+                                                    textAlign: 'left',
+                                                }}>
                                                     {key}
                                                 </th>
                                             ))}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* Dynamically create rows for each data item */}
                                         {unallocatedData.map((item, index) => (
                                             <tr key={index}>
                                                 {Object.values(item).map((value, i) => (
-                                                    <td
-                                                        key={i}
-                                                        style={{
-                                                            border: '1px solid #ddd',
-                                                            padding: '8px',
-                                                        }}>
-                                                        {JSON.stringify(value)}</td>
+                                                    <td key={i} style={{
+                                                        border: '1px solid #ddd',
+                                                        padding: '8px',
+                                                    }}>
+                                                        {JSON.stringify(value)}
+                                                    </td>
                                                 ))}
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             ) : (
-                                <p>No data available</p> // Display if no unallocated data
+                                <p>No data available</p>
                             )}
                         </div>
                     </div>
