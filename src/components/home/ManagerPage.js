@@ -11,11 +11,11 @@ import logo from "../Img/LSS.png";
 
 function ManagerPage() {
     // State hooks to manage the form, fetched data, and messages
-    const [subjectcode, setsubjectcode] = useState('');
-    const [subjectname, setsubjectname] = useState('');
+    const [subjectCode, setsubjectCode] = useState('');
+    const [subjectName, setsubjectName] = useState('');
     const [startdate, setstartdate] = useState('');
     const [noofenrolments, setnoofenrolments] = useState('');
-    const [subjectcodeInstance, setsubjectcodeInstance] = useState('');
+    const [subjectCodeInstance, setsubjectCodeInstance] = useState('');
 
     // Separate success and error messages for each form
     const [subjectSuccessMessage, setSubjectSuccessMessage] = useState('');
@@ -26,40 +26,40 @@ function ManagerPage() {
     // Adding subject when form is submitted
     const addSubject = async (e) => {
         e.preventDefault();
-        if (!subjectcode || !subjectname) {
+        if (!subjectCode || !subjectName) {
             setSubjectErrorMessage("Subject code and subject name are required.");
             return;
         }
         try {
-            const response = await axios.post('http://localhost:3000/add-subject', {
-                subjectcode,
-                subjectname,
+            const response = await axios.post('http://localhost:3000/api/addsubject', {
+                subjectCode,
+                subjectName,
             });
             setSubjectSuccessMessage(response.data.message);
-            setsubjectcode('');
-            setsubjectname('');
+            setsubjectCode('');
+            setsubjectName('');
             setSubjectErrorMessage('');
         } catch (error) {
-            setSubjectErrorMessage(error.response?.data?.error || 'Error adding subject');
-            setSubjectSuccessMessage('');
+            console.error('Error:', error.response.data.error || error.response.data.message);
+            alert(error.response.data.error || error.response.data.message);
         }
     };
 
     // Adding subject instance when form is submitted
     const addSubjectInstance = async (e) => {
         e.preventDefault();
-        if (!subjectcodeInstance || !startdate || !noofenrolments) {
+        if (!subjectCodeInstance || !startdate || !noofenrolments) {
             setInstanceErrorMessage("Subject code, start date, and number of enrolments are required.");
             return;
         }
         try {
             const response = await axios.post('http://localhost:3000/add-subject-instance', {
-                subjectcode: subjectcodeInstance,
+                subjectCode: subjectCodeInstance,
                 startdate,
                 noofenrolments,
             });
             setInstanceSuccessMessage(response.data.message);
-            setsubjectcodeInstance('');
+            setsubjectCodeInstance('');
             setstartdate('');
             setnoofenrolments('');
             setInstanceErrorMessage('');
@@ -119,6 +119,16 @@ function ManagerPage() {
                             }}>
                                 Lecturer Assignment
                             </Nav.Link>
+                            <Nav.Link href="/editlecturer" style={{
+                                padding: '10px',
+                                borderRadius: '5px',
+                                color: 'white', // Text color for contrast
+                                textAlign: 'center',
+                                backgroundColor: '#427AA1', // Button background color
+                                marginBottom: '10px',
+                            }}>
+                                Edit Lecturer Details
+                            </Nav.Link>
                             <LogoutButton />
                         </Nav>
 
@@ -134,24 +144,24 @@ function ManagerPage() {
                             {subjectErrorMessage && <div className="alert alert-danger">{subjectErrorMessage}</div>}
                             <Form onSubmit={addSubject}>
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="subjectcodeInput">Subject Code</Form.Label>
+                                    <Form.Label htmlFor="subjectCodeInput">Subject Code</Form.Label>
                                     <Form.Control
-                                        id="subjectcodeInput"
+                                        id="subjectCodeInput"
                                         placeholder="Enter Subject Code"
-                                        value={subjectcode}
-                                        onChange={(e) => setsubjectcode(e.target.value)}
+                                        value={subjectCode}
+                                        onChange={(e) => setsubjectCode(e.target.value)}
                                     />
                                     <Form.Text className="text-muted">
                                         Please enter a 7 digit unique code for the subject. Example CSE1OSX.
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="subjectnameInput">Subject Name</Form.Label>
+                                    <Form.Label htmlFor="subjectNameInput">Subject Name</Form.Label>
                                     <Form.Control
-                                        id="subjectnameInput"
+                                        id="subjectNameInput"
                                         placeholder="Enter Subject Name"
-                                        value={subjectname}
-                                        onChange={(e) => setsubjectname(e.target.value)}
+                                        value={subjectName}
+                                        onChange={(e) => setsubjectName(e.target.value)}
                                     />
                                     <Form.Text className="text-muted">
                                         Please enter the full name of the subject. Example Computer Science.
@@ -172,12 +182,12 @@ function ManagerPage() {
                             {instanceErrorMessage && <div className="alert alert-danger">{instanceErrorMessage}</div>}
                             <Form onSubmit={addSubjectInstance}>
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="subjectcodeInstanceInput">Subject Code</Form.Label>
+                                    <Form.Label htmlFor="subjectCodeInstanceInput">Subject Code</Form.Label>
                                     <Form.Control
-                                        id="subjectcodeInstanceInput"
+                                        id="subjectCodeInstanceInput"
                                         placeholder="Enter Subject Code"
-                                        value={subjectcodeInstance}
-                                        onChange={(e) => setsubjectcodeInstance(e.target.value)}
+                                        value={subjectCodeInstance}
+                                        onChange={(e) => setsubjectCodeInstance(e.target.value)}
                                     />
                                     <Form.Text className="text-muted">
                                         Please enter the subject code that corresponds to the instance. Example CSE1ABC.
@@ -193,7 +203,7 @@ function ManagerPage() {
                                         onChange={(e) => setstartdate(e.target.value)}
                                     />
                                     <Form.Text className="text-muted">
-                                        Please enter the start date for the subject instance.
+                                        Please enter the start date for the subject instance. This should be the first of each month.
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group className="mb-3">

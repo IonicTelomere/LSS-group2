@@ -150,7 +150,7 @@ app.post('/api/register', async (req, res) => {
       });
     } catch (err) {
       console.error('Error:', err);
-      res.status(500).json({ message: 'Something went wrong' });
+      return res.status(500).json({ message: err.sqlMessage || 'Failed to create user' });
     }
   });
 
@@ -167,7 +167,7 @@ app.post('/api/register', async (req, res) => {
     connection.query(query, [subjectId, lecturerId], (err, results) => {
         if (err) {
             console.error('Error calling procedure:', err);
-            return res.status(500).json({ error: 'Database error' });
+            return res.status(500).json({ message: err.sqlMessage || 'Failed to assign lecturer to subject' });
         }
 
         // Extract result message from the output
@@ -232,7 +232,7 @@ app.post('/lecturer', async (req, res) => {
       (err, results) => {
         if (err) {
           console.error('Error updating lecturer:', err);
-          return res.status(500).json({ message: 'Failed to update lecturer information' });
+          return res.status(500).json({ message: err.sqlMessage || 'Failed to update lecturer information' });
         }
   
         res.status(200).json({ message: 'Lecturer updated successfully' });
@@ -254,15 +254,22 @@ app.post('/api/addsubject', (req, res) => {
         return res.status(400).json({ error: 'Subject code and name are required.' });
     }
 
-    const query = 'INSERT INTO Subjects (subjectCode, subjectName) VALUES (?, ?)';
+    const query = 'CALL Add_Subject (?,?)';
     connection.query(query, [subjectCode, subjectName], (err, result) => {
         if (err) {
             console.error('Error adding subject:', err);
-            return res.status(500).json({ error: 'Failed to add subject.' });
+
+            // If it's a SQL error related to SIGNAL (custom error), capture and send it
+            if (err.code === '45000') {
+                return res.status(400).json({ error: err.message });
+            }
+
+            return res.status(500).json({ message: err.sqlMessage || 'Failed to add subject' });
         }
         res.status(200).json({ message: 'Subject added successfully!' });
     });
 });
+
 
 app.post('/lecturerdetails', async (req, res) => {
     console.log("Received POST request to /insert");
@@ -277,5 +284,6 @@ app.post('/lecturerdetails', async (req, res) => {
         console.error('Detailed Error:', error);  // Log the error for debugging
         // Send more detailed error message to the client
         res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });
+        
     }
 });

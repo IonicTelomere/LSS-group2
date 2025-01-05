@@ -127,8 +127,8 @@ function ManageLecturerPage() {
           <h1>Manage Lecturer Information</h1>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             <Nav className="flex-column" style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px', marginRight: '20px', width: '250px' }}>
-              <Nav.Link href="/admin" style={{ padding: '10px', borderRadius: '5px', backgroundColor: 'white', color: 'black', textAlign: 'center', marginBottom: '10px' }}>
-                Admin Page
+              <Nav.Link href="/manager" style={{ padding: '10px', borderRadius: '5px', backgroundColor: 'white', color: 'black', textAlign: 'center', marginBottom: '10px' }}>
+                ManagerSchedule
               </Nav.Link>
               <LogoutButton />
             </Nav>
