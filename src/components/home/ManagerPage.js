@@ -22,6 +22,8 @@ function ManagerPage() {
     const [subjectErrorMessage, setSubjectErrorMessage] = useState('');
     const [instanceSuccessMessage, setInstanceSuccessMessage] = useState('');
     const [instanceErrorMessage, setInstanceErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');  // State for error message
+    const [successMessage, setSuccessMessage] = useState('');
 
     // Adding subject when form is submitted
     const addSubject = async (e) => {
@@ -53,8 +55,8 @@ function ManagerPage() {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:3000/add-subject-instance', {
-                subjectCode: subjectCodeInstance,
+            const response = await axios.post('http://localhost:3000/api/addsubjectinstance', {
+                subjectCodeInstance,
                 startdate,
                 noofenrolments,
             });
@@ -64,8 +66,12 @@ function ManagerPage() {
             setnoofenrolments('');
             setInstanceErrorMessage('');
         } catch (error) {
-            setInstanceErrorMessage(error.response?.data?.error || 'Error adding subject instance');
-            setInstanceSuccessMessage('');
+            if (error.response && error.response.data.error) {
+                setErrorMessage(error.response.data.error);  // Set error message from API
+            } else {
+                setErrorMessage('An unexpected error occurred.');
+            }
+            setSuccessMessage(''); 
         }
     };
 

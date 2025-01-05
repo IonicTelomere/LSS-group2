@@ -156,15 +156,15 @@ app.post('/api/register', async (req, res) => {
 
 
   app.post('/assign-subject', (req, res) => {
-    const { subjectId, lecturerId } = req.body;  // Changed to subjectId
+    const { subjectCodeInstance, lecturerId } = req.body;  // Changed to subjectCodeInstance
 
-    if (!subjectId || !lecturerId) {
-        return res.status(400).json({ error: 'subjectId and lecturerId are required' });
+    if (!subjectCodeInstance || !lecturerId) {
+        return res.status(400).json({ error: 'subjectCodeInstance and lecturerId are required' });
     }
 
     const query = 'CALL AllocateLecturer(?, ?); ';
     
-    connection.query(query, [subjectId, lecturerId], (err, results) => {
+    connection.query(query, [subjectCodeInstance, lecturerId], (err, results) => {
         if (err) {
             console.error('Error calling procedure:', err);
             return res.status(500).json({ message: err.sqlMessage || 'Failed to assign lecturer to subject' });
@@ -286,4 +286,36 @@ app.post('/lecturerdetails', async (req, res) => {
         res.status(500).json({ message: "An error occurred while processing your request.", error: error.message });
         
     }
+});
+
+
+app.post('/api/addsubjectinstance', (req, res) => {
+    console.log('Request Body:', req.body);
+    const { subjectCodeInstance, startdate, noofenrolments } = req.body;
+
+    // Input validation
+    if (!subjectCodeInstance || !startdate || !noofenrolments) {
+        return res.status(400).json({ error: 'Subject ID, Start Date, and Number of Enrolments are required.' });
+    }
+
+    // Query to call the stored procedure
+    const query = 'CALL Add_Subject_Instance (?, ?, ?)';
+
+    // Execute the query
+    connection.query(query, [subjectCodeInstance, startdate, noofenrolments], (err, result) => {
+        if (err) {
+            console.error('Error adding subject instance:', err);
+
+            // Check if the error is a custom MySQL error (raised by SIGNAL)
+            if (err.sqlMessage) {
+                return res.status(400).json({ error: err.sqlMessage });
+            }
+
+            // General server error
+            return res.status(500).json({ message: 'Failed to add subject instance.' });
+        }
+
+        // Success message
+        res.status(200).json({ message: 'Subject instance added successfully!' });
+    });
 });
