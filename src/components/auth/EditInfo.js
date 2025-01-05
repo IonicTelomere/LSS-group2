@@ -4,76 +4,56 @@ import axios from 'axios';
 import LogoutButton from '../auth/Logout';
 
 function ManageLecturerPage() {
-  // State variables to store lecturer details
-  const [lecturerId, setLecturerId] = useState(''); // Stores the lecturer ID input
-  const [email, setEmail] = useState(''); // Stores the lecturer email input
-  const [password, setPassword] = useState(''); // Stores the new password input
-  const [confirmPassword, setConfirmPassword] = useState(''); // Stores confirm password input
-  const [firstName, setFirstName] = useState(''); // Stores the lecturer first name input
-  const [lastName, setLastName] = useState(''); // Stores the lecturer last name input
-  const [preference, setPreference] = useState(''); // Stores the lecturer's primary subject preference
-  const [preference1, setPreference1] = useState(''); // Stores the lecturer's second subject preference
-  const [preference2, setPreference2] = useState(''); // Stores the lecturer's third subject preference
-  const [workload, setWorkload] = useState(''); // Stores the lecturer's workload input
-  const [error, setError] = useState(''); // Stores error messages
-  const [successMessage, setSuccessMessage] = useState(''); // Stores success messages
+  const [lecturerId, setLecturerId] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [preference, setPreference] = useState('');
+  const [preference1, setPreference1] = useState('');
+  const [preference2, setPreference2] = useState('');
+  const [workload, setWorkload] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Function to fetch lecturer data based on lecturer ID
   const fetchLecturerData = async () => {
     if (!lecturerId) {
-      setError('Lecturer ID is required!'); // Error if no lecturer ID is provided
+      setError('Lecturer ID is required!');
       return;
     }
     try {
-      // Fetch lecturer data from the backend API
       const response = await axios.get(`/api/lecturers/${lecturerId}`);
       const data = response.data;
-      
-      // Set the fetched data into state variables
       setFirstName(data.firstName);
       setLastName(data.lastName);
-      setEmail(data.email);
       setPreference(data.preference);
       setPreference1(data.preference1);
       setPreference2(data.preference2);
       setWorkload(data.workload);
     } catch (err) {
-      // Handle error if data fetch fails
       setError(err.response?.data?.message || 'Failed to fetch lecturer data');
     }
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form from reloading the page on submission
-    if (password && password !== confirmPassword) {
-      setError("Passwords don't match!"); // Error if passwords don't match
-      return;
-    }
+    e.preventDefault();
 
     try {
-      // Send a PUT request to update lecturer data
       const response = await axios.put(`/api/lecturers/${lecturerId}`, {
         firstName,
         lastName,
-        email,
         preference,
         preference1,
         preference2,
         workload,
-        password: password || undefined, // Only send password if provided
       });
-      
-      // Set success message if update is successful
       setSuccessMessage('Lecturer information updated successfully!');
-      setError(''); // Clear any error messages
+      setError('');
     } catch (err) {
-      // Handle error if update fails
       setError(err.response?.data?.message || 'Failed to update lecturer information');
     }
   };
 
-  // List of all available subjects for preference selection
   const allSubjects = [
     "Application Development in the Cloud",
     "Architecting on the Cloud",
@@ -117,42 +97,58 @@ function ManageLecturerPage() {
     "Profesional Environment"
   ];
 
+
+  const fetchData = async () => {
+          setLoading(true);
+          setError(null);
+  
+          try {
+              // Replace with your actual backend URL (adjust port if needed)
+              const response = await axios.post('http://localhost:3000/lecturerdetails', {
+                  // You can send data in the request body if needed
+                  // For example:
+                  // data: 'someData'
+              });
+  
+              setData(response.data);  // Set the received data to state
+          } catch (err) {
+              setError('Error fetching data from the backend');
+              console.error(err);
+          } finally {
+              setLoading(false);
+          }
+      };
+  
+
   return (
     <Container>
       <Row>
         <Col>
           <h1>Manage Lecturer Information</h1>
-          
-          {/* Sidebar for navigation */}
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             <Nav className="flex-column" style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px', marginRight: '20px', width: '250px' }}>
               <Nav.Link href="/admin" style={{ padding: '10px', borderRadius: '5px', backgroundColor: 'white', color: 'black', textAlign: 'center', marginBottom: '10px' }}>
                 Admin Page
               </Nav.Link>
-              <LogoutButton /> {/* Logout button */}
+              <LogoutButton />
             </Nav>
 
-            {/* Form to update lecturer details */}
             <div style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px', width: '600px' }}>
               <Form onSubmit={handleSubmit}>
-                
-                {/* Lecturer ID input */}
                 <Form.Group className="mb-3">
                   <Form.Label>Lecturer ID</Form.Label>
                   <Form.Control
                     type="text"
                     value={lecturerId}
-                    onChange={(e) => setLecturerId(e.target.value)} // Update lecturerId state on change
+                    onChange={(e) => setLecturerId(e.target.value)}
                     required
                   />
-                  <Button variant="secondary" onClick={fetchLecturerData} className="mt-2">Fetch Lecturer Data</Button> {/* Fetch data on button click */}
+                  <Button variant="secondary" onClick={fetchLecturerData} className="mt-2">Fetch Lecturer Data</Button>
                 </Form.Group>
 
-                {/* Display error or success message */}
                 {error && <p className="text-danger">{error}</p>}
                 {successMessage && <p className="text-success">{successMessage}</p>}
 
-                {/* Form fields for lecturer details */}
                 <Form.Group className="mb-3">
                   <Form.Label>First Name</Form.Label>
                   <Form.Control type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={50} required />
@@ -164,14 +160,10 @@ function ManageLecturerPage() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={50} required />
-                </Form.Group>
-
-                {/* Dropdown to select lecturer's preferences */}
-                <Form.Group className="mb-3">
                   <Form.Label>Preference</Form.Label>
-                  <Form.Select value={preference} onChange={(e) => setPreference(e.target.value)}>
+                  <Form.Select
+                    value={preference}
+                    onChange={(e) => setPreference(e.target.value)}>
                     <option value="">Select Subject</option>
                     {allSubjects.map((subject) => (
                       <option key={subject} value={subject}>{subject}</option>
@@ -179,10 +171,11 @@ function ManageLecturerPage() {
                   </Form.Select>
                 </Form.Group>
 
-                {/* Other preferences */}
                 <Form.Group className="mb-3">
                   <Form.Label>Preference 1</Form.Label>
-                  <Form.Select value={preference1} onChange={(e) => setPreference1(e.target.value)}>
+                  <Form.Select
+                    value={preference1}
+                    onChange={(e) => setPreference1(e.target.value)}>
                     <option value="">Select Subject</option>
                     {allSubjects.map((subject) => (
                       <option key={subject} value={subject}>{subject}</option>
@@ -192,7 +185,9 @@ function ManageLecturerPage() {
 
                 <Form.Group className="mb-3">
                   <Form.Label>Preference 2</Form.Label>
-                  <Form.Select value={preference2} onChange={(e) => setPreference2(e.target.value)}>
+                  <Form.Select
+                    value={preference2}
+                    onChange={(e) => setPreference2(e.target.value)}>
                     <option value="">Select Subject</option>
                     {allSubjects.map((subject) => (
                       <option key={subject} value={subject}>{subject}</option>
@@ -200,40 +195,61 @@ function ManageLecturerPage() {
                   </Form.Select>
                 </Form.Group>
 
-                {/* Workload input */}
                 <Form.Group className="mb-3">
-                  <Form.Label>Workload</Form.Label>
-                  <Form.Control type="text" value={workload} onChange={(e) => setWorkload(e.target.value)} />
-                </Form.Group>
+  <Form.Label>Workload</Form.Label>
+  <Form.Select
+    value={workload}
+    onChange={(e) => setWorkload(e.target.value)}
+    required
+  >
+    <option value="">Select Workload</option>
+    <option value="5 days per week">5 days per week</option>
+    <option value="4 days per week">4 days per week</option>
+    <option value="3 days per week">3 days per week</option>
+    <option value="2 days per week">2 days per week</option>
+    <option value="1 days per week">1 day per week</option>
+  </Form.Select>
+</Form.Group>
 
-                {/* Password fields */}
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label>New Password (Optional)</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    minLength={8}
-                    maxLength={32}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formConfirmPassword">
-                  <Form.Label>Confirm New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </Form.Group>
-
-                {/* Submit button */}
                 <Button variant="primary" type="submit">
                   Update Lecturer Info
                 </Button>
               </Form>
             </div>
           </div>
+
+          <div className="App">
+            <h1>Data from Backend</h1>
+            <button onClick={fetchData} disabled={loading}>
+                {loading ? 'Loading...' : 'Fetch Data'}
+            </button>
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            {data.length > 0 ? (
+                <table>
+                    <thead>
+                        <tr>
+                            {/* Adjust the headers based on your data structure */}
+                            {Object.keys(data[0]).map((key) => (
+                                <th key={key}>{key}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item, index) => (
+                            <tr key={index}>
+                                {Object.values(item).map((value, i) => (
+                                    <td key={i}>{JSON.stringify(value)}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No data available</p>
+            )}
+        </div>
         </Col>
       </Row>
     </Container>
