@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import Nav from 'react-bootstrap/Nav';
 import LogoutButton from '../auth/Logout';
+import logo from "../Img/LSS.png";
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -98,14 +99,27 @@ function RegisterPage() {
   return (
     <Container>
       <Row>
-        <Col>
-          <h1>Register New Users</h1>
+              <Col>
+                  {/* Logo section */}
+                  <div className="text-center mb-4" style={{ marginBottom: '30px' }}>
+                      <img
+                          src={logo}
+                          alt="LSS Logo"
+                          style={{
+                              width: "250px", // Adjust width as necessary
+                              height: "auto",
+                              padding: '20px 0px 0px 0px',
+                              borderRadius: "10px", // Rounded logo
+                          }}
+                      />
+                  </div>
+                  <h1 style={{ textAlign: 'left', color: '#064789' }}>Register New Users</h1>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
             <Nav
               defaultActiveKey="/home"
               className="flex-column"
               style={{
-                backgroundColor: 'lightblue',
+                backgroundColor: '#EBF2FA',
                 padding: '20px',
                 borderRadius: '30px',
                 marginRight: '20px',
@@ -117,8 +131,8 @@ function RegisterPage() {
                 style={{
                   padding: '10px',
                   borderRadius: '5px',
-                  backgroundColor: 'white',
-                  color: 'black',
+                  backgroundColor: '#427AA1',
+                  color: 'white',
                   textAlign: 'center',
                   marginBottom: '10px',
                 }}
@@ -130,12 +144,13 @@ function RegisterPage() {
 
             <div
               style={{
-                backgroundColor: 'lightblue',
+                backgroundColor: '#EBF2FA',
                 padding: '20px',
                 borderRadius: '30px',
                 width: '600px',
               }}
-            >
+                      >
+                          <h3 style={{ color: '#064789', textAlign: 'left' }}>User Registration</h3>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>First Name</Form.Label>
@@ -281,7 +296,7 @@ function RegisterPage() {
 
                 {error && <p className="text-danger">{error}</p>}
 
-                <Button variant="primary" type="submit">
+                              <Button variant="primary" type="submit" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>
                   Register &gt;&gt;
                 </Button>
               </Form>

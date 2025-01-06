@@ -121,6 +121,16 @@ function ManagerSchedule() {
                                     textAlign: 'center',
                                     marginBottom: '10px',
                                 }}>Subject Summary</Nav.Link>
+                            <Nav.Link href="/editlecturer" style={{
+                                padding: '10px',
+                                borderRadius: '5px',
+                                color: 'white', // Text color for contrast
+                                textAlign: 'center',
+                                backgroundColor: '#427AA1', // Button background color
+                                marginBottom: '10px',
+                            }}>
+                                Edit Lecturer Details
+                            </Nav.Link>
                             <LogoutButton />
                         </Nav>
 
@@ -131,6 +141,7 @@ function ManagerSchedule() {
                             marginBottom: '20px',
                             width: '600px'
                         }}>
+                            <h3 style={{ color: '#064789' }}>Assign Lecturer to Subject</h3>
                             <Form onSubmit={assignSubject}>
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="subjectIdInput">Subject ID</Form.Label>

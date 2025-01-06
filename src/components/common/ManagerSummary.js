@@ -1,10 +1,10 @@
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import LogoutButton from '../auth/Logout';
 import axios from 'axios';
-import React, { useState } from 'react';
 import logo from "../Img/LSS.png";
 
 function ManagerSummary() {
@@ -77,6 +77,16 @@ function ManagerSummary() {
                                     backgroundColor: '#427AA1', // Button background color
                                     marginBottom: '10px',
                                 }}>Lecturer Assignment</Nav.Link>
+                            <Nav.Link href="/editlecturer" style={{
+                                padding: '10px',
+                                borderRadius: '5px',
+                                color: 'white', // Text color for contrast
+                                textAlign: 'center',
+                                backgroundColor: '#427AA1', // Button background color
+                                marginBottom: '10px',
+                            }}>
+                                Edit Lecturer Details
+                            </Nav.Link>
                             <LogoutButton />
                         </Nav>
                         {/* Main Content */}
@@ -156,7 +166,7 @@ function ManagerSummary() {
                 </Col>
             </Row>
         </Container>
-    )
+    );
 }
 
 export default ManagerSummary;

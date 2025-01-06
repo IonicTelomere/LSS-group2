@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import LogoutButton from '../auth/Logout';
+import logo from "../Img/LSS.png";
 
 function ManageLecturerPage() {
   const [lecturerId, setLecturerId] = useState('');
@@ -123,27 +124,75 @@ function ManageLecturerPage() {
   return (
     <Container>
       <Row>
-        <Col>
-          <h1>Manage Lecturer Information</h1>
+           <Col>
+                  {/* Logo section */}
+                  <div className="text-center mb-4" style={{ marginBottom: '30px' }}>
+                      <img
+                          src={logo}
+                          alt="LSS Logo"
+                          style={{
+                              width: "250px", // Adjust width as necessary
+                              height: "auto",
+                              padding: '20px 0px 0px 0px',
+                              borderRadius: "10px", // Rounded logo
+                          }}
+                      />
+                  </div>
+          <h1 style={{ textAlign: 'left', color: '#064789' }}>Manage Lecturer Information</h1>
           <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-            <Nav className="flex-column" style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px', marginRight: '20px', width: '250px' }}>
-              <Nav.Link href="/manager" style={{ padding: '10px', borderRadius: '5px', backgroundColor: 'white', color: 'black', textAlign: 'center', marginBottom: '10px' }}>
-                ManagerSchedule
-              </Nav.Link>
+                      <Nav className="flex-column" style={{
+                          backgroundColor: '#EBF2FA', // Light Background Color
+                          padding: '20px',
+                          borderRadius: '30px',
+                          marginRight: '20px',
+                          width: '250px',
+                      }}
+                      >
+                          <Nav.Link href="/manager" style={{
+                              padding: '10px',
+                              borderRadius: '5px',
+                              color: 'white', // Text color for contrast
+                              textAlign: 'center',
+                              backgroundColor: '#427AA1', // Button background color
+                              marginBottom: '10px',
+                          }}>
+                                Manager Home
+                          </Nav.Link>
+                          <Nav.Link href="/managersummary" style={{
+                              padding: '10px',
+                              borderRadius: '5px',
+                              color: 'white', // Text color for contrast
+                              textAlign: 'center',
+                              backgroundColor: '#427AA1', // Button background color
+                              marginBottom: '10px',
+                          }}>
+                              Subject Summary
+                          </Nav.Link>
+                          <Nav.Link href="/managerschedule" style={{
+                              padding: '10px',
+                              borderRadius: '5px',
+                              color: 'white', // Text color for contrast
+                              textAlign: 'center',
+                              backgroundColor: '#427AA1', // Button background color
+                              marginBottom: '10px',
+                          }}>
+                              Lecturer Assignment
+                          </Nav.Link>
               <LogoutButton />
             </Nav>
 
-            <div style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '30px', width: '600px' }}>
+                      <div style={{ backgroundColor: '#EBF2FA', padding: '20px', borderRadius: '30px', width: '600px', marginBottom: '20px', }}>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Lecturer ID</Form.Label>
-                  <Form.Control
+                    <Form.Control
+                    placeholder="00"
                     type="text"
                     value={lecturerId}
                     onChange={(e) => setLecturerId(e.target.value)}
                     required
                   />
-                  <Button variant="secondary" onClick={fetchLecturerData} className="mt-2">Fetch Lecturer Data</Button>
+                      <Button variant="secondary" onClick={fetchLecturerData} className="mt-2" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>Fetch Lecturer Data</Button>
                 </Form.Group>
 
                 {error && <p className="text-danger">{error}</p>}
@@ -151,12 +200,12 @@ function ManageLecturerPage() {
 
                 <Form.Group className="mb-3">
                   <Form.Label>First Name</Form.Label>
-                  <Form.Control type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={50} required />
+                                  <Form.Control placeholder="John" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={50} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label>Last Name</Form.Label>
-                  <Form.Control type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={50} required />
+                                  <Form.Control placeholder="Smith" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={50} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -211,14 +260,20 @@ function ManageLecturerPage() {
   </Form.Select>
 </Form.Group>
 
-                <Button variant="primary" type="submit">
+                              <Button variant="primary" type="submit" style={{ backgroundColor: '#427AA1', borderColor: '#427AA1' }}>
                   Update Lecturer Info
                 </Button>
               </Form>
             </div>
           </div>
 
-          <div className="App">
+                  <div style={{
+                      backgroundColor: '#EBF2FA', // Light Background
+                      padding: '20px',
+                      borderRadius: '30px',
+                      marginRight: '20px',
+                      flex: 1
+                  }}>
             <h1>Data from Backend</h1>
             <button onClick={fetchData} disabled={loading}>
                 {loading ? 'Loading...' : 'Fetch Data'}
@@ -227,12 +282,20 @@ function ManageLecturerPage() {
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
             {data.length > 0 ? (
-                <table>
+                          <table style={{
+                              width: '100%',
+                              borderCollapse: 'collapse',
+                              backgroundColor: 'white',
+                          }}>
                     <thead>
                         <tr>
                             {/* Adjust the headers based on your data structure */}
                             {Object.keys(data[0]).map((key) => (
-                                <th key={key}>{key}</th>
+                                <th key={key} style={{
+                                    border: '1px solid #ddd',
+                                    padding: '8px',
+                                    textAlign: 'left',
+                                }}>{key}</th>
                             ))}
                         </tr>
                     </thead>
@@ -240,7 +303,10 @@ function ManageLecturerPage() {
                         {data.map((item, index) => (
                             <tr key={index}>
                                 {Object.values(item).map((value, i) => (
-                                    <td key={i}>{JSON.stringify(value)}</td>
+                                    <td key={i} style={{
+                                        border: '1px solid #ddd',
+                                        padding: '8px',
+                                    }}>{JSON.stringify(value)}</td>
                                 ))}
                             </tr>
                         ))}

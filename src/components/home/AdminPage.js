@@ -103,11 +103,10 @@ function AdminPage() {
                                 style={{
                                     padding: '10px',
                                     borderRadius: '5px',
-                                    color: 'black',
+                                    backgroundColor: '#427AA1',
+                                    color: 'white',
                                     textAlign: 'center',
-                                    backgroundColor: 'white',
                                     marginBottom: '10px',
-                                    borderColor: 'white',
                                 }}
                             >
                                 Register New Users
