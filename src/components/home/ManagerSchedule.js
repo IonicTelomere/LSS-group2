@@ -69,6 +69,7 @@ function ManagerSchedule() {
             setLecturerId('');
         } catch (error) {
             console.error(error.response?.data?.error || 'Error assigning subject');
+            alert(error.response.data.error || error.response.data.message);
         }
     };
 

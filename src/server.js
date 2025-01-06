@@ -156,15 +156,15 @@ app.post('/api/register', async (req, res) => {
 
 
   app.post('/assign-subject', (req, res) => {
-    const { subjectCodeInstance, lecturerId } = req.body;  // Changed to subjectCodeInstance
+    const { subjectId, lecturerId } = req.body;  // Changed to subjectId
 
-    if (!subjectCodeInstance || !lecturerId) {
-        return res.status(400).json({ error: 'subjectCodeInstance and lecturerId are required' });
+    if (!subjectId || !lecturerId) {
+        return res.status(400).json({ error: 'subjectId and lecturerId are required' });
     }
 
     const query = 'CALL AllocateLecturer(?, ?); ';
     
-    connection.query(query, [subjectCodeInstance, lecturerId], (err, results) => {
+    connection.query(query, [subjectId, lecturerId], (err, results) => {
         if (err) {
             console.error('Error calling procedure:', err);
             return res.status(500).json({ message: err.sqlMessage || 'Failed to assign lecturer to subject' });
