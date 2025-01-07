@@ -10,7 +10,7 @@ import LogoutButton from '../auth/Logout';
 import logo from "../Img/LSS.png";
 
 function ManagerSchedule() {
-    // State hooks to manage the form and fetched data
+    // State hooks to manage the form, fetched data, and messages
     const [subjectId, setSubjectId] = useState('');
     const [lecturerId, setLecturerId] = useState('');
     const [specialisationData, setSpecialisationData] = useState([]);
@@ -19,6 +19,7 @@ function ManagerSchedule() {
     const [loadingUnallocated, setLoadingUnallocated] = useState(false);
     const [errorSpecialisation, setErrorSpecialisation] = useState(null);
     const [errorUnallocated, setErrorUnallocated] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(''); // New state for success message
 
     // Fetch unallocated subjects data from the backend
     const fetchUnallocatedData = async () => {
@@ -65,6 +66,13 @@ function ManagerSchedule() {
                 lecturerId,
             });
             console.log(response.data.message);
+            // Set success message
+            setSuccessMessage(`Successfully assigned ${lecturerId} to subject ${subjectId}.`);
+
+            // Show browser alert
+            window.alert(`Successfully assigned ${lecturerId} to subject ${subjectId}.`);
+
+            // Clear input fields
             setSubjectId('');
             setLecturerId('');
         } catch (error) {
@@ -173,6 +181,8 @@ function ManagerSchedule() {
                                     Assign
                                 </Button>
                             </Form>
+                            {/* Display success message here */}
+                            {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
                         </div>
                     </div>
 
