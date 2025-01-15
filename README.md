@@ -44,8 +44,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-## Available Scripts
+## Code Structure/ Directories
+Please check the Code Structure.md file
 
+## CI/CD
+
+For Continuous Integration The developers of thi application used copies of the main branch as a sandbox environment for updates to the
+application, once the update was successfully integrated into the copy and all tests passed only then was the andbox branch pushed to main
+
+## Local Server Setup
+
+Download the repository, navigate to the source folder on your default drive, copy the path, open cmd, change to the repository directory
+adding /src to the end of the directory path, run node server.js in the cmd, only run server after the application is allready running
+so they can both run on the same port
+
+## Local Application Setup
+
+Download the repository, navigate to the source folder on your default drive, copy the path, open cmd, change to the repository directory
 In the project directory, you can run:
 
 ### `npm start`
@@ -78,3 +93,4 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
