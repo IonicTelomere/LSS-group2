@@ -6,23 +6,23 @@ LecturerProfile -- Profile for each lecturer
 LecturerNotification -- Notification/Calendar view for each lecturer
 
 ### Manager Pages
-ManagerPage -- Add subject/subject instance form page
+ManagerPage.js -- Add subject/subject instance form page
 
-ManagerSchedule -- Assign lecturers to subjects form and lecturer specialisation table and un allocated subjects table view, data is pulled from database tables
+ManagerSchedule.js -- Assign lecturers to subjects form and lecturer specialisation table and un allocated subjects table view, data is pulled from database tables
 
-ManagerSummary -- Unassigned subjects table view, data is pulled from database tables
+ManagerSummary.js -- Unassigned subjects table view, data is pulled from database tables
 
-EditInfo -- Edit lecturer information form, data is updated in the database tables
+EditInfo.js -- Edit lecturer information form, data is updated in the database tables
 
 ### Administrator Pages
-AdminPage -- Administrator home page with timestamped note taking feature, notes are stored in local cache
+AdminPage.js -- Administrator home page with timestamped note taking feature, notes are stored in local cache
 
-RegisterPage -- User registration form, data is inserted into database tables
+RegisterPage.js -- User registration form, data is inserted into database tables
 
 ## Backend Pages (Database)
-DataBase -- Function to pull data from the database
+DataBase.js -- Function to pull data from the database
 
-server -- Page to set up connection with RDS, All forms that link to the database go through the functions in here (create, read, update)
+Server.js -- Page to set up connection with RDS, All forms that link to the database go through the functions in here (create, read, update)
 
 ## Open source license
 
