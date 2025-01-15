@@ -134,4 +134,4 @@ dist
 *.sqlite
 
 # Database file
-.server
+server.js
