@@ -11,15 +11,15 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Importing Bootstrap CSS for st
 
 // Importing the components used in the app
 import SiteFooter from "./components/common/SiteFooter";
-import LoginPage from "./components/auth/LoginPage";
-import RegisterPage from "./components/auth/RegisterPage";
-import AdminPage from "./components/home/AdminPage";
-import LecturerNotification from "./components/home/LecturerNotification";
-import ManagerPage from "./components/home/ManagerPage";
-import ManagerSummary from "./components/common/ManagerSummary";
-import LecturerProfile from "./components/home/LecturerProfile";
-import ManagerSchedule from "./components/home/ManagerSchedule";
-import EditInfo from "./components/auth/EditInfo";
+import LoginPage from "./components/Backend forms/LoginPage";
+import RegisterPage from "./components/Backend forms/RegisterPage";
+import AdminPage from "./components/Administrator pages/AdminPage";
+import LecturerNotification from "./components/Lecturer pages/LecturerNotification";
+import ManagerPage from "./components/Manager pages/ManagerPage";
+import ManagerSummary from "./components/Manager pages/ManagerSummary";
+import LecturerProfile from "./components/Lecturer pages/LecturerProfile";
+import ManagerSchedule from "./components/Manager pages/ManagerSchedule";
+import EditInfo from "./components/Backend forms/EditInfo";
 
 function App() {
   const { user } = useUser(); // Accessing user information from context
