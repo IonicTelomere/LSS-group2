@@ -44,23 +44,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-## Code Structure/ Directories
-Please check the Code Structure.md file
+## Available Scripts
 
-## CI/CD
-
-For Continuous Integration The developers of thi application used copies of the main branch as a sandbox environment for updates to the
-application, once the update was successfully integrated into the copy and all tests passed only then was the andbox branch pushed to main
-
-## Local Server Setup
-
-Download the repository, navigate to the source folder on your default drive, copy the path, open cmd, change to the repository directory
-adding /src to the end of the directory path, run node server.js in the cmd, only run server after the application is allready running
-so they can both run on the same port
-
-## Local Application Setup
-
-Download the repository, navigate to the source folder on your default drive, copy the path, open cmd, change to the repository directory
 In the project directory, you can run:
 
 ### `npm start`
